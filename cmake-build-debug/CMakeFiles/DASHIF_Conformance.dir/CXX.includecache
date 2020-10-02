@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.cpp
+ConformanceConstraints.h
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.h
+
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.h
+ConformanceErrorLevels.h
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceErrorLevels.h
+iostream
+-
+
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceErrorLevels.h
+cstdint
+-
+iterator
+-
+typeinfo
+-
+ConformanceException.h
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.h
+
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.h
+list
+-
+ConformanceExceptionTypes.h
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceExceptionTypes.h
+
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceExceptionTypes.h
+string
+-
+exception
+-
+map
+-
+array
+-
+
