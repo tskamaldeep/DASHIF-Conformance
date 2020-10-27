@@ -117,21 +117,23 @@ ConformanceException::ConformanceException() noexcept {
 }
 
 ConformanceException &ConformanceException::operator=(const ConformanceException &excinstance) noexcept {
-    try {
-        exceptionname_ = excinstance.exceptionName();
+    std::string excname = excinstance.exceptionName();
+    const std::size_t exchash = hashnum(exceptionname_);
 
-        // Set the exception string to be output.
-        std::size_t substrlenshort = std::min(exceptionname_.size(), EXCEPTION_STR_CHAR_LIMIT_SHORT);
-        std::size_t substrlenlong = std::min(exceptionname_.size(), EXCEPTION_STR_CHAR_LIMIT_LONG);
-        exceptionstrshort_ = excinstance.exceptionstrshort_.substr(0, substrlenshort);
-        exceptionstrlong_ = excinstance.exceptionstrlong_.substr(0, substrlenlong);
-    }
-    catch (ConformanceException &e) {
-        cerr << "DASH-IF Conformance Exception: " << e.what() << endl;
-    }
-    catch (std::exception &e) {
-        cerr << "Platform Exception: " << e.what() << endl;
-    }
+    ConformanceException *exc = new ConformanceException(exchash);
+
+    // Set the exception string to be output.
+    std::size_t substrlenshort = std::min(exceptionname_.size(), EXCEPTION_STR_CHAR_LIMIT_SHORT);
+    std::size_t substrlenlong = std::min(exceptionname_.size(), EXCEPTION_STR_CHAR_LIMIT_LONG);
+    std::string excshort = excinstance.exceptionstrshort_.substr(0, substrlenshort);
+    std::string exclong = excinstance.exceptionstrlong_.substr(0, substrlenlong);
+
+    exc->exceptionName(excname);
+    exc->exceptionStrShort(exchash, excshort);
+    exc->exceptionStrLong(exchash, exclong);
+
+    return *exc;
+
 }
 
 ConformanceException::ConformanceException(const ConformanceException &cexcept) noexcept {

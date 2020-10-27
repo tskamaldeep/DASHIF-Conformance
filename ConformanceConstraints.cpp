@@ -2,6 +2,9 @@
 // Created by Kamaldeep Tumkur on 28/08/20.
 //
 
+#include <type_traits>
+#include <string>
+#include <cstdlib>
 #include "ConformanceConstraints.h"
 
 using namespace std;
@@ -14,7 +17,7 @@ ConformanceConstraint::ConformanceConstraint(ConstraintTypes cttype) : cttype_(c
     // Define a few stack vars.
     std::string entityName;
     std::string entityDesc;
-    const char *entityType;
+//    const char *entityType;
 
     // TODO: Implement the switch handling.
     switch (cttype) {
@@ -93,6 +96,12 @@ ConformanceConstraint::ConformanceConstraint(ConstraintTypes cttype) : cttype_(c
             ConstraintEntity vMaxHeight = ConstraintEntity("vMaxHeight", "@maxHeight",
                                                            "Maximum frame height across representations",
                                                            std::string(typeid(std::size_t).name()));
+            ConstraintEntity vMinWidth = ConstraintEntity("vMinWidth", "@minWidth",
+                                                          "Minimum frame width across representations",
+                                                          std::string(typeid(std::size_t).name()));
+            ConstraintEntity vMinHeight = ConstraintEntity("vMinHeight", "@minHeight",
+                                                           "Minimum frame height across representations",
+                                                           std::string(typeid(std::size_t).name()));
             ConstraintEntity vMaxFrameRate = ConstraintEntity("vMaxFrameRate", "@maxFrameRate",
                                                               "Max frame rate across representations",
                                                               std::string(typeid(std::size_t).name()));
@@ -105,19 +114,17 @@ ConformanceConstraint::ConformanceConstraint(ConstraintTypes cttype) : cttype_(c
                                                     std::string(typeid(double).name()));
             ConstraintEntity scanType = ConstraintEntity("scanType", "@scanType", "Image scan ordering or type",
                                                          std::string(typeid(std::string).name()));
-            ConstraintEntity lang = ConstraintEntity("lang", "@lang",
-                                                     "Dominant Language attribute associated with the adaptation set",
-                                                     std::string(typeid(std::string).name()));
 
             allConstraints_->push_back(&mimeType);
             allConstraints_->push_back(&vMaxWidth);
             allConstraints_->push_back(&vMaxHeight);
+            allConstraints_->push_back(&vMinWidth);
+            allConstraints_->push_back(&vMinHeight);
             allConstraints_->push_back(&vMaxFrameRate);
             allConstraints_->push_back(&videoCodecs);
             allConstraints_->push_back(&par);
             allConstraints_->push_back(&sar);
             allConstraints_->push_back(&scanType);
-            allConstraints_->push_back(&lang);
             break;
         }
 
@@ -128,8 +135,13 @@ ConformanceConstraint::ConformanceConstraint(ConstraintTypes cttype) : cttype_(c
             ConstraintEntity audioCodecs = ConstraintEntity("audioCodecs", "@codecs", "Supported audio codecs",
                                                             std::string(typeid(std::string).name()));
 
+            ConstraintEntity lang = ConstraintEntity("lang", "@lang",
+                                                     "Dominant Language attribute associated with the adaptation set",
+                                                     std::string(typeid(std::string).name()));
+
             allConstraints_->push_back(&audioCodecs);
             allConstraints_->push_back(&audioSamplingRate);
+            allConstraints_->push_back(&lang);
             break;
         }
 
@@ -168,28 +180,19 @@ ConformanceConstraint::ConformanceConstraint(ConstraintTypes cttype) : cttype_(c
                                                                       "IOP constraints for v4.3 vs the previous versions",
                                                                       std::string(typeid(std::string).name()));
 
-            // Version 4.3 is the latest IOP version.
-            ConstraintDefinition *version2ConstraintDef = new ConstraintDefinition("version2", "version2", version2Constraint);
-            ConstraintDefinition *version3ConstraintDef = new ConstraintDefinition("version3", "version3", version3Constraint);
-            ConstraintDefinition *version4_0_ConstraintDef = new ConstraintDefinition("version4_0", "version4_0", version4_0_Constraint);
-            ConstraintDefinition *version4_1_ConstraintDef = new ConstraintDefinition("version4_1", "version4_1", version4_1_Constraint);
-            ConstraintDefinition *version4_2_ConstraintDef = new ConstraintDefinition("version4_2", "version4_2", version4_2_Constraint);
-            ConstraintDefinition *version4_3_ConstraintDef = new ConstraintDefinition("version4_3", "version4_3", version4_3_Constraint);
-
-            constraintDefVersionsMap->insert_or_assign(version2Constraint, version2ConstraintDef);
-            constraintDefVersionsMap->insert_or_assign(version2Constraint, version2ConstraintDef);
-            constraintDefVersionsMap->insert_or_assign(version3Constraint, version3ConstraintDef);
-            constraintDefVersionsMap->insert_or_assign(version4_0_Constraint, version4_0_ConstraintDef);
-            constraintDefVersionsMap->insert_or_assign(version4_1_Constraint, version4_1_ConstraintDef);
-            constraintDefVersionsMap->insert_or_assign(version4_2_Constraint, version4_2_ConstraintDef);
-            constraintDefVersionsMap->insert_or_assign(version4_3_Constraint, version4_3_ConstraintDef);
+            allConstraints_->push_back(&version2Constraint);
+            allConstraints_->push_back(&version3Constraint);
+            allConstraints_->push_back(&version4_0_Constraint);
+            allConstraints_->push_back(&version4_1_Constraint);
+            allConstraints_->push_back(&version4_2_Constraint);
+            allConstraints_->push_back(&version4_3_Constraint);
 
             break;
         }
         case ConstraintTypes::AkamaiCDNTokenConstraints:
             // Outline any definitions.
             break;
-        }
+    }
 
     // Now initialize the constraints through each of the entity definitions.
     // Initialize the constraints first.
@@ -217,79 +220,497 @@ void ConformanceConstraint::initializeConstraints() {
     // for the corresponding entity.
     // A constraint could have more than one definition.
 
-    std::list<ConstraintEntity*> *allconstraints = allConstraints_;
-    for (auto const& [cttype] : *allconstraints) {
-        auto addr = std::addressof(cttype);
-        ConstraintEntity iterEntity = static_pointer_cast<ConstraintEntity>(*addr);
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // Initial definitions.
+    std::string conformanceEntityID = "";
+    ConformanceEnforcementTypes enforcementType = conformance::exception::ConformanceEnforcementTypes::MUST;
+    ConstraintOperator operatorType = conformance::constraints::ConstraintOperator::PRESENT;
+    std::string conditionalFormat = "If %s is ";
+    // Entity ID + operator + value
+    ////////////////////////////////////////////////////////////////////////////////////////
 
-        if (iterEntity.entityName().compare("mpdtype")) {
+    std::list<ConstraintEntity *> *allconstraints = allConstraints_;
+    std::list<ConstraintEntity *>::iterator *ctiter = new std::list<ConstraintEntity *>::iterator();
+    for (*ctiter = allconstraints->begin(); *ctiter != allconstraints->end(); ctiter++) {
+        ConstraintEntity iterEntity = reinterpret_cast<const ConstraintEntity &>(ctiter);
+
+        if (iterEntity.entityName().compare("mpdtype") == 0) {
             // Initialize all the definitions of this constraint corresponding to this entity.
-        }
-        else if (iterEntity.entityName().compare("ast")) {
+            // Build all definitions corresponding to the constraint associate with the 'mpdType' entity.
+
+            // Constraint #1: ast (Availability Start Time) is optional for "static" MPDs and mandatory for "dynamic" MPDs.
+            // Default description below. Use the setter for a more accurate constructed description.
+            // This is a dependency type constraint. Probably set a FLAG and check in both entities.
+            // Alternate way of constructing the ConstraintDefinition.
+
+            // Definition => Entity + EnforcementType + ConstraintType + Conditional
+            // OR
+            // Conditional + Entity + EnforcementType + ConstraintType.
+
+            conformanceEntityID = iterEntity.entityID();
+            std::string conformanceEntityVal = MPD_PROFILE_DYNAMIC;
+            enforcementType = conformance::exception::ConformanceEnforcementTypes::MUST;
+            operatorType = conformance::constraints::ConstraintOperator::PRESENT;
+            const char *cformat = conditionalFormat.append(
+                    std::string(typeid(conformanceEntityVal).name()) + ", ").c_str();
+            const std::string astpresenceDesc = "MPD@availabilityStartTime MUST be present in a dynamic type manifest.";
+
+            // Comparison =>  observed value (and datatype) vs. expected value (and datatype).
+            // If MPD@MPDType is dynamic, MPD@availabilityStartTime MUST be PRESENT.
+            // Any conditional for the constraint definition to apply.
+            char mpdtypeConditionalFormat[STR_DETAILED_DESCRIPTION_LENGTH];
+            sprintf(mpdtypeConditionalFormat, cformat, conformanceEntityID.c_str(), conformanceEntityVal.c_str());
+
+            ConstraintDefinition *astPresenceDefn = new ConstraintDefinition("availabilityStartTimePresence",
+                                                                             astpresenceDesc, iterEntity);
+            astPresenceDefn->setConstraintOperatorForEntity(operatorType);
+            astPresenceDefn->setConstraintEnforcementForDefinition(enforcementType);
+
+            // Constraint #2: type can be either "static" or "dynamic".
+            conformanceEntityID = iterEntity.entityID();
+            enforcementType = conformance::exception::ConformanceEnforcementTypes::MUST;
+            operatorType = conformance::constraints::ConstraintOperator::EQUALS;
+            const std::string mpdStaticTypeDesc = "MPD@type value MUST be STATIC";
+            const std::string mpdDynamicTypeDesc = "MPD@type value MUST be DYNAMIC";
+            // const std::string mpdValidTypesDesc = ;
+
+            // Define as two separate definitions, conjoined by the OR operator.
+            ConstraintDefinition *mpdStaticTypeDefn = new ConstraintDefinition("mpdStaticTypeDefinition",
+                                                                               mpdStaticTypeDesc, iterEntity);
+            ConstraintDefinition *mpdDynamicTypeDefn = new ConstraintDefinition("mpdDynamicTypeDefinition",
+                                                                                mpdDynamicTypeDesc, iterEntity);
+
+            // Static MPD setters.
+            mpdStaticTypeDefn->setConstraintEnforcementForDefinition(enforcementType);
+            mpdStaticTypeDefn->setConstraintOperatorForEntity(operatorType);
+            mpdStaticTypeDefn->setExpectedConstraintEntityVal(iterEntity, MPD_PROFILE_STATIC);
+
+            // Static MPD setters.
+            mpdDynamicTypeDefn->setConstraintEnforcementForDefinition(enforcementType);
+            mpdDynamicTypeDefn->setConstraintOperatorForEntity(operatorType);
+            mpdDynamicTypeDefn->setExpectedConstraintEntityVal(iterEntity, MPD_PROFILE_DYNAMIC);
+
+            // The definitions have been created
+
+        } else if (iterEntity.entityName() == "ast") {
             // Initialize all the definitions of this constraint corresponding to this entity.
-        }
-        else if (iterEntity.entityName().compare("mediapresDuration")) {
 
-        }
-        else if (iterEntity.entityName().compare("availabilityTimeOffset")) {
+        } else if (iterEntity.entityName().compare("mediapresDuration") == 0) {
+            const std::string mediaPresDurationDesc = "The MPD@mediaPresentationDuration entity SHALL be PRESENT OR Period@Start is PRESENT";
+            ConstraintDefinition *mediaPresDurationDefn = new ConstraintDefinition("mediaPresDurationDefinition",
+                                                                                   mediaPresDurationDesc, iterEntity);
+        } else if (iterEntity.entityName().compare("availabilityTimeOffset") == 0) {
+            const std::string astPresentDesc = "AvailabilityTimeOffset SHOULD NOT be PRESENT in static manifests";
+            ConstraintDefinition *astPresentDefn = new ConstraintDefinition("astPresentDefinition", astPresentDesc,
+                                                                            iterEntity);
+        } else if (iterEntity.entityName().compare("minBufferTime") == 0) {
+            const std::string minBufferTimeDesc = "The minimum buffer time SHOULD be set to the maximum GOP size";
+            ConstraintDefinition *minBufferTimeDefn = new ConstraintDefinition("minimumBufferTimeLimitsDefinition",
+                                                                               minBufferTimeDesc, iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("minBufferTime")) {
+            const std::string minBufferTimeLimitDesc = "The minimumBufferTime MAY be set to a smaller value than the segment duration AND not a higher value";
+            ConstraintDefinition *minBufferTimeLimitDefn = new ConstraintDefinition("minBufferTimeLimitDefinition",
+                                                                                    minBufferTimeLimitDesc, iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("mpdprofiles")) {
+        } else if (iterEntity.entityName().compare("mpdprofiles") == 0) {
 
-        }
-        else if (iterEntity.entityName().compare("segmentAligned")) {
+        } else if (iterEntity.entityName().compare("segmentAligned") == 0) {
+            const std::string liveSegmentAlignedDesc = "If MPD@Profiles EQUALS urn:mpeg:dash:profile:isoff-live:2011 @segmentAlignment is set to "
+                                                   "TRUE for all adaptation sets.";
+            ConstraintDefinition *liveSegmentAlignedDefn = new ConstraintDefinition("liveSegmentAligned", liveSegmentAlignedDesc, iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("subsegmentAligned")) {
+            // live segment aligned definition setters.
+            liveSegmentAlignedDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            liveSegmentAlignedDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::AND_OPERATOR);
+            liveSegmentAlignedDefn->setExpectedConstraintEntityVal(iterEntity, "true");
 
-        }
-        else if (iterEntity.entityName().compare("tsb")) {
+        } else if (iterEntity.entityName().compare("subsegmentAligned") == 0) {
 
-        }
-        else if (iterEntity.entityName().compare("minUpdatePeriod")) {
+            const std::string ondemandSegmentAlignedDesc = "If MPD@Profiles EQUALS urn:mpeg:dash:profile:isoff-ondemand:2011 @subSegmentAlignment "
+                                                           "is set to TRUE for all adaptation sets.";
+            ConstraintDefinition *ondemandSegmentAlignedDefn = new ConstraintDefinition("ondemandSegmentAligned", ondemandSegmentAlignedDesc, iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("mimeType")) {
+            // ondemand segment aligned definition setters.
+            ondemandSegmentAlignedDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            ondemandSegmentAlignedDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::AND_OPERATOR);
+            ondemandSegmentAlignedDefn->setExpectedConstraintEntityVal(iterEntity, "true");
 
-        }
-        else if (iterEntity.entityName().compare("vMaxWidth")) {
+            //
 
-        }
-        else if (iterEntity.entityName().compare("vMaxHeight")) {
+        } else if (iterEntity.entityName().compare("tsb") == 0) {
+            const std::string staticTSBAbsenceDesc = "MPD@timeShiftBufferDepth SHOULD NOT be present if the MPD@type is static";
+            ConstraintDefinition *staticTSBAbsenceDefn = new ConstraintDefinition("staticTimeShiftBufferDepth", staticTSBAbsenceDesc, iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("vMaxFrameRate")) {
+            staticTSBAbsenceDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHOULD_NOT);
+            staticTSBAbsenceDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::PRESENT);
+            staticTSBAbsenceDefn->setExpectedConstraintEntityVal(iterEntity, "0");
 
-        }
-        else if (iterEntity.entityName().compare("videoCodecs")) {
+        } else if (iterEntity.entityName().compare("minUpdatePeriod") == 0) {
+            const std::string minUpdatePeriodDesc = "Minimum update period is NOT PRESENT in ondemand manifests";
+            ConstraintDefinition *minUpdatePeriodDefn = new ConstraintDefinition("minimumUpdatePeriodDefinition",
+                                                                                 minUpdatePeriodDesc,
+                                                                                 iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("sar")) {
+            minUpdatePeriodDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL_NOT);
+            minUpdatePeriodDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::PRESENT);
+            minUpdatePeriodDefn->setExpectedConstraintEntityVal(iterEntity, "0");
 
-        }
-        else if (iterEntity.entityName().compare("par")) {
+            const std::string minUpdatePeriodLiveDesc = "Minimum update period is PRESENT in live manifests";
+            ConstraintDefinition *minUpdatePeriodLiveDefn = new ConstraintDefinition("minimumUpdatePeriodLiveDefinition",
+                                                                                     minUpdatePeriodLiveDesc,
+                                                                                     iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("scanType")) {
+            minUpdatePeriodLiveDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL_NOT);
+            minUpdatePeriodLiveDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::PRESENT);
+            minUpdatePeriodLiveDefn->setExpectedConstraintEntityVal(iterEntity, "0");
 
-        }
-        else if (iterEntity.entityName().compare("lang")) {
+        } else if (iterEntity.entityName().compare("mimeType") == 0) {
+            const std::string videoMimeType = "video/mp4";
+            const std::string videoMimeTypeDesc = "@mimetype for a video adaptation set SHALL be set to video/mp4";
+            ConstraintDefinition *videoMimeTypeDefn = new ConstraintDefinition("videoMimeTypeDefinition", videoMimeTypeDesc, iterEntity);
 
-        }
-        else if (iterEntity.entityName().compare("audioSamplingRate")) {
+            videoMimeTypeDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            videoMimeTypeDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::EQUALS);
+            videoMimeTypeDefn->setExpectedConstraintEntityVal(iterEntity, videoMimeType);
 
-        }
-        else if (iterEntity.entityName().compare("audioCodecs")) {
+            const std::string audioMimeType = "audio/mp4";
+            const std::string audioMimeTypeDesc = "@mimetype for an audio adaptation set SHALL be set to audio/mp4";
+            ConstraintDefinition *audioMimeTypeDefn = new ConstraintDefinition("audioMimeTypeDefinition", audioMimeTypeDesc, iterEntity);
+
+            audioMimeTypeDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            audioMimeTypeDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::EQUALS);
+            audioMimeTypeDefn->setExpectedConstraintEntityVal(iterEntity, audioMimeType);
+
+            const std::string subtitleType1 = "application/mp4";
+            const std::string subtitleType2 = "application/ttml+xml";
+            const std::string subtitleMimeTypeDesc1 = "@mimetype for a subtitle adaptation set SHALL be set to application/mp4";
+            const std::string subtitleMimeTypeDesc2 = "@mimetype for a subtitle adaptation set SHALL be set to application/ttml+xml";
+            ConstraintDefinition *subtitleMimeTypeDefn1 = new ConstraintDefinition("subtitleMimeTypeDefn1", subtitleMimeTypeDesc1, iterEntity);
+
+            subtitleMimeTypeDefn1->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            subtitleMimeTypeDefn1->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::EQUALS);
+            subtitleMimeTypeDefn1->setExpectedConstraintEntityVal(iterEntity, subtitleType1);
+
+            ConstraintDefinition *subtitleMimeTypeDefn2 = new ConstraintDefinition("subtitleMimeTypeDefn2", subtitleMimeTypeDesc2, iterEntity);
+            subtitleMimeTypeDefn2->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            subtitleMimeTypeDefn2->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::EQUALS);
+            subtitleMimeTypeDefn2->setExpectedConstraintEntityVal(iterEntity, subtitleType2);
+
+            ConstraintDefinition *subtitleMimeTypeDefn = new ConstraintDefinition("subtitleMimeTypeDefn", subtitleMimeTypeDesc1 + " AND " + subtitleMimeTypeDesc2, iterEntity);
+            subtitleMimeTypeDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::SHALL);
+            subtitleMimeTypeDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::AND_OPERATOR);
+            // Should we set the expected val for the combinatorial result.
+            subtitleMimeTypeDefn->setExpectedConstraintEntityVal(iterEntity, "0");
+            
+
+        } else if (iterEntity.entityName().compare("vMaxWidth") == 0) {
+            const std::string widthTagPresenceDesc = "A video adaptation set SHALL have the width tag for same width in all representations OR the maxWidth tag if not the same width PRESENT.";
+            ConstraintDefinition *widthPresenceDefn = new ConstraintDefinition("widthTagPresenceDefinition",
+                                                                               widthTagPresenceDesc, iterEntity);
+
+            const std::string maxWidthLimitDesc = "Max width value MAY exceed the largest value of any coded representation in an adaptation set";
+            ConstraintDefinition *maxWidthLimitDefn = new ConstraintDefinition("maxWidthLimitDefinition",
+                                                                               maxWidthLimitDesc, iterEntity);
+
+            const std::string minWidthPresenceDesc = "Min width value SHOULD NOT be PRESENT";
+            ConstraintDefinition *minWidthPresenceDefn = new ConstraintDefinition("minWidthPresenceDefn",
+                                                                                  minWidthPresenceDesc, iterEntity);
+
+            const std::string minWidthLimitDesc = "Min width, if present, MAY be smaller than the smallest width in the adaptation set.";
+            ConstraintDefinition *minWidthLimitDefn = new ConstraintDefinition("minWidthLimitDefinition",
+                                                                               minWidthLimitDesc, iterEntity);
+
+        } else if (iterEntity.entityName().compare("vMaxHeight") == 0) {
+            const std::string heightTagPresenceDesc = "A video adaptation set SHALL have the height tag for the same height in all representations OR the maxHeight tag if not the same height PRESENT.";
+            ConstraintDefinition *heightPresenceDefn = new ConstraintDefinition("heightTagPresenceDefinition",
+                                                                                heightTagPresenceDesc, iterEntity);
+
+            const std::string maxHeightLimitDesc = "Max height value MAY exceed the largest value of any coded representation in an adaptation set";
+            ConstraintDefinition *maxHeightLimitDefn = new ConstraintDefinition("maxHeightLimitDefinition",
+                                                                                maxHeightLimitDesc, iterEntity);
+
+            const std::string minHeightPresenceDesc = "Min height value SHOULD NOT be PRESENT";
+            ConstraintDefinition *minHeightPresenceDefn = new ConstraintDefinition("minHeightPresenceDefinition",
+                                                                                   minHeightPresenceDesc, iterEntity);
+
+            const std::string minHeightLimitDesc = "Min height, if present, MAY be smaller than the smallest height in the adaptation set.";
+            ConstraintDefinition *minHeightLimitDefn = new ConstraintDefinition("minHeightLimitDefinition",
+                                                                                minHeightLimitDesc, iterEntity);
+
+        } else if (iterEntity.entityName().compare("vMaxFrameRate") == 0) {
+            const std::string vMaxFrameRateDesc = "@framerate SHOULD be PRESENT in the mpd manifest if all representations "
+                                                  "have the same framerate OR the maxFrameRate SHOULD be PRESENT.";
+            ConstraintDefinition *vFrameRateDefn = new ConstraintDefinition("vMaxFrameRateDefinition",
+                                                                            vMaxFrameRateDesc, iterEntity);
+        } else if (iterEntity.entityName().compare("videoCodecs") == 0) {
+        } else if (iterEntity.entityName().compare("sar") == 0) {
+
+        } else if (iterEntity.entityName().compare("par") == 0) {
+            const std::string parTagPresenceDesc = "A video adaptation set SHALL have the par tag PRESENT";
+            ConstraintDefinition *parPresenceDefn = new ConstraintDefinition("parTagPresenceDefinition",
+                                                                             parTagPresenceDesc, iterEntity);
+
+        } else if (iterEntity.entityName().compare("scanType") == 0) {
+            const std::string scanTypePresenceDesc = "For a video adaptation set, scanType SHALL NOT be present.";
+            ConstraintDefinition *scanTypePresenceDefn = new ConstraintDefinition("scanTypePresenceDefinition",
+                                                                                  scanTypePresenceDesc, iterEntity);
+
+            const std::string scanTypeValueDesc = "For a video adaptation set, scanType if present, SHALL be set to progressive";
+            ConstraintDefinition *scanTypeValueDefn = new ConstraintDefinition("scanTypeValueDefinition",
+                                                                               scanTypeValueDesc, iterEntity);
+
+        } else if (iterEntity.entityName().compare("lang") == 0) {
+            const std::string langPresenceDesc = "For an audio adaptation set, the lang attribute SHALL be PRESENT";
+            ConstraintDefinition *langPresenceDefn = new ConstraintDefinition("langPresenceDefinition",
+                                                                              langPresenceDesc, iterEntity);
+
+
+        } else if (iterEntity.entityName().compare("audioSamplingRate") == 0) {
+            const std::string audioSamplingRateDesc = "For an audio adaptation set, the audioSamplingRate SHALL be PRESENT";
+            ConstraintDefinition *audioSamplingRateDefn = new ConstraintDefinition("audioSamplingRateDefinition",
+                                                                                   audioSamplingRateDesc, iterEntity);
+
+        } else if (iterEntity.entityName().compare("audioCodecs") == 0) {
 
         }
     }
 
     // Initialize the constraints/versions map.
+    // Version 4.3 is the latest IOP version.
+//    ConstraintDefinition *version2ConstraintDef = new ConstraintDefinition("version2", "version2", version2Constraint);
+//    ConstraintDefinition *version3ConstraintDef = new ConstraintDefinition("version3", "version3", version3Constraint);
+//    ConstraintDefinition *version4_0_ConstraintDef = new ConstraintDefinition("version4_0", "version4_0", version4_0_Constraint);
+//    ConstraintDefinition *version4_1_ConstraintDef = new ConstraintDefinition("version4_1", "version4_1", version4_1_Constraint);
+//    ConstraintDefinition *version4_2_ConstraintDef = new ConstraintDefinition("version4_2", "version4_2", version4_2_Constraint);
+//    ConstraintDefinition *version4_3_ConstraintDef = new ConstraintDefinition("version4_3", "version4_3", version4_3_Constraint);
 
+}
 
+void ConstraintDefinition::setExpectedConstraintEntityVal(ConstraintEntity &ce, std::string ceval) {
+    const std::string entitydatatype = ce.entityDatatype();
+    const std::string entityid = ce.entityID();
+    std::cout << "EntityDataType: " << entitydatatype;
+    expectedConstraintVal_ = std::move(ceval);
+    std::pair<std::string, const std::string> cevalpair = std::make_pair(expectedConstraintVal_, entitydatatype);
+    expectedConstraintValAndDatatypeMap_->insert_or_assign(entityid, cevalpair);
+}
+
+void ConstraintDefinition::setObservedConstraintEntityVal(ConstraintEntity &ce, std::string ceval) {
+    const std::string entitydatatype = ce.entityDatatype();
+    const std::string entityid = ce.entityID();
+    std::cout << "EntityDataType: " << entitydatatype;
+    observedConstraintVal_ = std::move(ceval);
+    std::pair<std::string, const std::string> cevalpair = std::make_pair(observedConstraintVal_, entitydatatype);
+    observedConstraintValAndDatatypeMap_->insert_or_assign(entityid, cevalpair);
+}
+
+static bool conformance::constraints::integralTypeCheck(std::string val) {
+
+    std::string valuetype = string(typeid(val).name());
+    bool result = false;
+
+    if (valuetype.compare("int") || valuetype.compare("int16_t") ||
+        valuetype.compare("int32_t") || valuetype.compare("int64_t") ||
+        valuetype.compare("size_t")) {
+        result = true;
+    }
+    return result;
+}
+
+static bool conformance::constraints::floatTypeCheck(std::string val) {
+
+    std::string valuetype = string(typeid(val).name());
+    bool result = false;
+
+    if (valuetype.compare("float") || valuetype.compare("double")) {
+        result = true;
+    }
+    return result;
+}
+
+static bool conformance::constraints::containerTypeCheck(std::string val) {
+    std::string valuetype = string(typeid(val).name());
+    bool result = false;
+
+    if (valuetype.compare("initializer_list") || valuetype.compare("list") ) {
+        result = true;
+    }
+
+    return result;
+}
+
+static ConstraintDefEvalStatus conformance::constraints::compareValues(std::string expectedVal, std::string observedVal,
+                                                                       std::string valuetype, ConstraintOperator c_op) {
+    // valuetype is the type of the expected or the observed val.
+    // Sameness of both is tested before comparing values in this function.
+    ConstraintDefEvalStatus result = ConstraintDefEvalStatus::FAILURE;
+
+    switch (c_op) {
+        case (conformance::constraints::ConstraintOperator::EQUALS):
+        case (conformance::constraints::ConstraintOperator::GREATER_THAN_EQUALS):
+        case (conformance::constraints::ConstraintOperator::LESS_THAN_EQUALS):
+        case (conformance::constraints::ConstraintOperator::PRESENT):
+            // Datatype comparisons and associations for value compare.
+            // Compare for is_integral, is_floating_point, string comparison.
+            if (conformance::constraints::integralTypeCheck(valuetype)) {
+                auto intval_expected = atoi(expectedVal.c_str());
+                auto intval_observed = atoi(observedVal.c_str());
+
+                if (intval_observed == intval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                } else if (c_op == conformance::constraints::ConstraintOperator::GREATER_THAN_EQUALS &&
+                           intval_observed > intval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                } else if (c_op == conformance::constraints::ConstraintOperator::LESS_THAN_EQUALS &&
+                           intval_observed < intval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                } else if (c_op == conformance::constraints::ConstraintOperator::PRESENT &&
+                           intval_observed > 0) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                }
+            } else if (conformance::constraints::floatTypeCheck(valuetype)) {
+                auto doubleval_expected = atof(expectedVal.c_str());
+                auto doubleval_observed = atof(observedVal.c_str());
+
+                if (doubleval_expected == doubleval_observed)
+                    result = ConstraintDefEvalStatus::SUCCESS;
+
+                else if (c_op == conformance::constraints::ConstraintOperator::GREATER_THAN_EQUALS &&
+                         doubleval_observed > doubleval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                } else if (c_op == conformance::constraints::ConstraintOperator::LESS_THAN_EQUALS &&
+                           doubleval_observed < doubleval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                } else if (c_op == conformance::constraints::ConstraintOperator::PRESENT &&
+                           doubleval_observed > 0) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                }
+            }
+            break;
+
+        case (conformance::constraints::ConstraintOperator::GREATER_THAN):
+            if (conformance::constraints::integralTypeCheck(valuetype)) {
+                auto intval_expected = atoi(expectedVal.c_str());
+                auto intval_observed = atoi(observedVal.c_str());
+
+                if (intval_observed > intval_expected)
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                else
+                    result = ConstraintDefEvalStatus::FAILURE;
+            } else if (conformance::constraints::floatTypeCheck(valuetype)) {
+                auto floatval_expected = atof(expectedVal.c_str());
+                auto floatval_observed = atof(observedVal.c_str());
+
+                if (floatval_observed > floatval_expected)
+                    result = ConstraintDefEvalStatus::SUCCESS;
+            }
+            break;
+
+        case (conformance::constraints::ConstraintOperator::LESS_THAN):
+            if (conformance::constraints::integralTypeCheck(valuetype)) {
+                auto intval_expected = atof(expectedVal.c_str());
+                auto intval_observed = atof(observedVal.c_str());
+
+                if (intval_observed < intval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                }
+            } else if (conformance::constraints::floatTypeCheck(valuetype)) {
+                auto floatval_expected = atof(expectedVal.c_str());
+                auto floatval_observed = atof(observedVal.c_str());
+
+                if (floatval_observed < floatval_expected) {
+                    result = ConstraintDefEvalStatus::SUCCESS;
+                }
+            }
+            break;
+        case (conformance::constraints::ConstraintOperator::AND_OPERATOR):
+            // TODO: Describing comparison with an AND operator
+            // Segregate the comparisons as individual comparisons
+            // OR use containers.
+            break;
+        case (conformance::constraints::ConstraintOperator::OR_OPERATOR):
+            break;
+        default:
+            break;
+    }
+
+    return result;
+}
+
+// Expected constraint values as an std::pair and observed constraint values as an std::pair.
+// For the combinatorial AND/OR, evaluate the result per definition.
+// Then use the AND/OR result aggregate functions to arrive at the result status.
+ConstraintDefEvalStatus ConstraintDefinition::evaluateConformanceConstraintResult(std::pair<std::string, const std::string> &expected,
+                                                               std::pair<std::string, const std::string> &observed,
+                                                               ConstraintOperator coperator) {
+
+    ConstraintDefEvalStatus result = ConstraintDefEvalStatus::FAILURE;
+    std::string expectedVal = expected.first;
+    const std::string expectedType = expected.second;
+
+    std::string observedVal = expected.first;
+    const std::string observedType = expected.second;
+
+    ConstraintOperator c_op = coperator;
+
+    if (expectedType.compare(observedType) != 0) {
+        this->setConstraintDefEvalStatus(result);
+        return result;
+    }
+
+    // Call to compare for evaluation.
+    result = compareValues(expectedVal, observedVal, expectedType, c_op);
+    this->setConstraintDefEvalStatus(result);
+    return result;
+}
+
+ConstraintDefEvalStatus valForCombinatorialAndDefinition(int16_t result1, int16_t result2) {
+
+    ConstraintDefEvalStatus output = ConstraintDefEvalStatus::SUCCESS;
+    switch (result1) {
+        case (0):
+            if (result2 == 0)
+                output = ConstraintDefEvalStatus::SUCCESS;
+            else if (result2 == 1)
+                output = ConstraintDefEvalStatus::CONDITIONAL_SUCCESS;
+            else
+                output = ConstraintDefEvalStatus::FAILURE;
+        case (1):
+            if (result2 == 0 || result2 == 1)
+                output = ConstraintDefEvalStatus::CONDITIONAL_SUCCESS;
+            else
+                output = ConstraintDefEvalStatus::FAILURE;
+        case(2):
+        default:
+            output = ConstraintDefEvalStatus::FAILURE;
+    }
+
+    return output;
+}
+
+ConstraintDefEvalStatus valForCombinatorialOrDefinition(int16_t result1, int16_t result2) {
+
+    ConstraintDefEvalStatus output = ConstraintDefEvalStatus::SUCCESS;
+    switch (result1) {
+        case (0):
+            output = ConstraintDefEvalStatus::SUCCESS;
+        case (1):
+            if (result2 == 0 || result2 == 1)
+                output = ConstraintDefEvalStatus::SUCCESS;
+            else
+                output = ConstraintDefEvalStatus::CONDITIONAL_SUCCESS;
+        case(2):
+            if (result2 == 0)
+                output = ConstraintDefEvalStatus::SUCCESS;
+            else if (result2 == 1)
+                output = ConstraintDefEvalStatus::CONDITIONAL_SUCCESS;
+            else
+                output = ConstraintDefEvalStatus::FAILURE;
+        default:
+            output = ConstraintDefEvalStatus::FAILURE;
+    }
+
+    return output;
 }
 
 void ConformanceConstraint::constraintShortDescription(const std::string &desc) {
@@ -331,21 +752,24 @@ std::size_t ConstraintEntity::addChildEntityToEntity(ConstraintEntity &childenti
 
         // Add the new child entity to the existing list
         celist.emplace_back(&ceentity);
-        allsubentities->insert_or_assign(chhash, celist);
+        allsubentities->try_emplace(chhash, celist);
     }
 
     return celist.size();
 }
 
-ConstraintDefinition::ConstraintDefinition(std::string defname, std::string defdesc, ConstraintEntity &entity) :
+ConstraintDefinition::ConstraintDefinition(std::string
+                                           defname, std::string
+                                           defdesc, ConstraintEntity &entity) :
         constraintname_(defname), constraintdesc_(defdesc), entity_(&entity) {
 
     defStatus_ = ConstraintDefEvalStatus::SUCCESS;
 
     // Set a default operator until the setter is called.
-    coperator_ = ConstraintOperator::PRESENT;
+    this->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::PRESENT);
 
     // Expand upon the definition construction to build a constraint definition.
-    
-}
+    // Change to failure/conditional failure as the conformance test progresses.
+    this->setConstraintDefEvalStatus(conformance::constraints::ConstraintDefEvalStatus::SUCCESS);
 
+}

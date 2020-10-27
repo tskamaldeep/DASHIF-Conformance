@@ -95,6 +95,7 @@ namespace conformance::constraints {
         AkamaiCDNTokenConstraints // Do tokens ever apply to content with other forms of more conventional modern security?
     };
 
+    // Consider segregating the AND and OR and removing the >= and <= as individual operators.
     enum ConstraintOperator : std::int16_t {
         EQUALS = 0,
         GREATER_THAN,
@@ -104,14 +105,13 @@ namespace conformance::constraints {
         BELONGS_TO,
         PRESENT,
         AND_OPERATOR,
-        OR_OPERATOR,
+        OR_OPERATOR
     };
 
     enum ConstraintDefEvalStatus : std::int16_t {
         SUCCESS = 0,
-        FAILURE = 1,
-        CONDITIONAL_SUCCESS = 5,
-        CONDITIONAL_FAILURE = 6
+        CONDITIONAL_SUCCESS = 1,
+        FAILURE = 2,
     };
 
     enum ConstraintVersions : std::int16_t {
@@ -141,7 +141,7 @@ namespace conformance::constraints {
         ConstraintEntity(std::string entityname, std::string entityid, std::string entitydesc, std::string entitydatatype) :
                 entityname_(entityname), entitydesc_(entitydesc), entitydatatype_(entitydatatype) {
 
-            std::list<ConstraintEntity*> *celist = {};
+            std::list<ConstraintEntity*> celist = {};
             subentities_->insert_or_assign(conformance::exception::hashnum(entityname), celist);
         };
 
@@ -166,6 +166,7 @@ namespace conformance::constraints {
     using namespace conformance::exception;
 
     class ConstraintDefinition {
+
     private:
         const std::string constraintname_;
         std::string constraintdesc_;
@@ -175,16 +176,18 @@ namespace conformance::constraints {
         ConformanceEnforcementTypes enforcement_;
         ConstraintOperator coperator_;
 
-        std::map<std::string, std::string> *expectedConstraintValDescMap_ = new std::map<std::string, std::string>();
-        std::map<std::string, std::string> *observedConstraintValDescMap_ = new std::map<std::string, std::string>();
+        // std::map<entity ID, std::map<expected entity Val, expected entity Type string form>>
+        std::map<std::string, std::pair<std::string, const std::string>> *expectedConstraintValAndDatatypeMap_ =
+                new std::map<std::string, std::pair<std::string, const std::string>>();
+        std::map<std::string, std::pair<std::string, const std::string>> *observedConstraintValAndDatatypeMap_ =
+                new std::map<std::string, std::pair<std::string, const std::string>>();
 
-//        static auto expectedConstraintVal_;
-        std::string expectedConstraintValDesc_;
-
-//        static auto observedConstraintVal_;
-        std::string observedConstraintValDesc_;
+        std::string  expectedConstraintVal_;
+        std::string observedConstraintVal_;
 
         ConstraintDefEvalStatus defStatus_;
+        ConstraintDefEvalStatus valForCombinatorialAndDefinition(int16_t result1, int16_t result2);
+        ConstraintDefEvalStatus valForCombinatorialOrDefinition(int16_t result1, int16_t result2);
 
     public:
         ConstraintDefinition(std::string, std::string, ConstraintEntity &);
@@ -195,15 +198,47 @@ namespace conformance::constraints {
         ConstraintEntity* constraintEntityFromDefinition() {return entity_; }
         ConformanceEnforcementTypes constraintEnforcementFromDefinition() {return enforcement_; }
         ConstraintOperator constraintOperatorForEntityFromDefinition() {return coperator_; }
+        ConstraintDefEvalStatus evaluateConformanceConstraintResult(std::pair<std::string, const std::string>&,
+                                                                    std::pair<std::string, const std::string>&, ConstraintOperator);
         ConstraintDefEvalStatus constraintDefEvalStatus() {return defStatus_; }
+
+
 
         void setConstraintDescription (std::string description) {
             constraintdesc_ = std::move(description);
         }
 
-        void setConstraintOperatorForEntity(ConstraintOperator coperator) {
-            coperator_ = coperator;
+        ConstraintDefEvalStatus operator&(ConstraintDefinition *cdef) {
+            // Does cdef and the current definition always have the same entity?
+            // Let's assume for now.
+            ConstraintEntity *mainentity = this->constraintEntityFromDefinition();
+            ConstraintEntity *cdefentity = cdef->constraintEntityFromDefinition();
+
+            if (mainentity != cdefentity) {
+                return ConstraintDefEvalStatus::FAILURE;
+            }
+
+            ConstraintDefEvalStatus mainresult = this->constraintDefEvalStatus();
+            ConstraintDefEvalStatus cdefresult = cdef->constraintDefEvalStatus();
+            int16_t andoutput = mainresult + cdefresult;
+
+            const std::string definitionDesc = this->constraintName() + "AND" + cdef->constraintName();
+            ConstraintDefinition *output = new ConstraintDefinition(constraintName(), definitionDesc, *mainentity);
+
+            output->setConstraintEnforcementForDefinition(cdef->constraintEnforcementFromDefinition());
         }
+
+        void setConstraintEnforcementForDefinition(ConformanceEnforcementTypes cetype) {
+            enforcement_ = std::move(cetype);
+        }
+
+        void setConstraintOperatorForEntity(ConstraintOperator coperator) {
+            coperator_ = std::move(coperator);
+        }
+
+        void setExpectedConstraintEntityVal(ConstraintEntity& ce, std::string ceval);
+
+        void setObservedConstraintEntityVal(ConstraintEntity& ce, std::string ceval);
 
         std::string constructDescriptionForConformanceConstraint(ConstraintEntity& );
 
@@ -211,21 +246,27 @@ namespace conformance::constraints {
 
         ConstraintDefEvalStatus findStatusForDefinition() const;
 
-        ~ConstraintDefinition();
+        ~ConstraintDefinition() {};
 
     };
 
     ////////////////////////////////////////////////////////
     // Conformance constraint class.
     ////////////////////////////////////////////////////////
+
+    static bool integralTypeCheck(std::string val);
+    static bool floatTypeCheck(std::string val);
+    static bool containerTypeCheck(std::string val);
+
+    static ConstraintDefEvalStatus compareValues(std::string expectedVal, std::string observedVal,
+                                                 std::string valuetype, ConstraintOperator _op);
+
     class ConformanceConstraint {
     private:
         std::string constraint_short_desc_;
         std::string constraint_detailed_desc_;
         ConstraintTypes cttype_;
         std::list<ConstraintEntity*> *allConstraints_ = new std::list<ConstraintEntity*>();
-        std::map<ConstraintEntity, std::string> *constraintDefVersionsMap =
-                new std::map<ConstraintEntity, std::string>();
 
         // Version? Does this correspond to the IOP version?
         std::size_t constraint_version_ = ConstraintVersions::IOP_VERSION;
@@ -235,7 +276,6 @@ namespace conformance::constraints {
 
         // Initialize the constraints mentioned in the constraint types.
         void initializeConstraints();
-
 
     public:
         ConformanceConstraint(ConstraintTypes cttype);

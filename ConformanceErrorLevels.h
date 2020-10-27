@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <iterator>
 #include <typeinfo>
+#include <list>
 #include "ConformanceException.h"
 
 namespace conformance::exception {
@@ -94,7 +95,7 @@ namespace conformance::exception {
 
     class ConformanceErrorLevels {
     private:
-        std::list<ConformanceException *> *conformanceExceptions = new std::list<ConformanceException *>();
+//        std::list<ConformanceException *> *conformanceExceptions = new std::list<ConformanceException *>();
 
         std::map<ConformanceErrorTypes, const std::size_t> *conformanceErrorMap_ =
                 new std::map<ConformanceErrorTypes, const std::size_t>();

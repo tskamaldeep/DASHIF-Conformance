@@ -5,7 +5,6 @@
 #ifndef DASHIF_CONFORMANCE_CONFORMANCEEXCEPTION_H
 #define DASHIF_CONFORMANCE_CONFORMANCEEXCEPTION_H
 
-#include <list>
 #include "ConformanceExceptionTypes.h"
 
 namespace conformance::exception {

@@ -23,16 +23,16 @@ namespace conformance::download {
 
     enum MPDCheckSequence : std::int16_t const {
     URLValidityCheck = 0,
-            AvailabilityCheck,
-            RedirectResponseCheck,
-            ManifestTypeCheck,
-            RefreshIntervalCheck,
-            TimestampValidityCheck,
-            DRMPresenceCheck,
-            SecureStreamCheck,
-            KeyServerAvailabilityCheck,
-            CodecSupportCheck,
-            VersionsCheck,
+    AvailabilityCheck,
+    RedirectResponseCheck,
+    ManifestTypeCheck,
+    RefreshIntervalCheck,
+    TimestampValidityCheck,
+    DRMPresenceCheck,
+    SecureStreamCheck,
+    KeyServerAvailabilityCheck,
+    CodecSupportCheck,
+    VersionsCheck,
 };
 
 enum MPDURLSCHEMETYPE : std::int16_t {
@@ -75,12 +75,12 @@ private:
     std::array<std::int16_t, 2> *MPDTypeCheckConstraints = new std::array<std::int16_t, 2>{
             conformance::constraints::StaticMPDConstraints, \
             conformance::constraints::DynamicMPDConstraints, \
-            };
+};
 
-    std::array<std::int16_t, 2> *MPDResponseConstraints = new std::array<std::int16_t, 2>{
+    std::array<std::int16_t, 2> *MPDResponseConstraints_ = new std::array<std::int16_t, 2>{
             conformance::constraints::HTTPSDownloadConstraints, \
             conformance::constraints::CaptioningMediaConstraints, \
-    };
+};
 
     std::array<std::int16_t, 2> *drmPresenceCheckConstraints = new std::array<std::int16_t, 2>{
             conformance::constraints::EncryptedMediaConstraints, \
@@ -92,14 +92,14 @@ private:
             conformance::constraints::CMediaSegmentConstraints,
     };
 
-    std::array<std::int16_t, 3> *clockConstraints  = new std::array<std::int16_t, 3>{
+    std::array<std::int16_t, 3> *clockConstraints = new std::array<std::int16_t, 3>{
             conformance::constraints::ClockConstraints, \
             conformance::constraints::MPDUpdateConstraints, \
             conformance::constraints::MPDTimelineConstraints
     };
 
-    std::array<std::int16_t, 1> *versionConstraints = new std::array<std::int16_t, 1> {
-        conformance::constraints::VersionsConstraints
+    std::array<std::int16_t, 1> *versionConstraints = new std::array<std::int16_t, 1>{
+            conformance::constraints::VersionsConstraints
     };
 
     // TODO: Define clock for timing checks. Alternatively, implement the test timer class.
@@ -121,8 +121,7 @@ public:
 
     CHECKTIMESTAMPTYPE currentSystemTime() { return std::chrono::system_clock::now(); }
 
-    std::map<int16_t, std::function<void(std::string, std::int16_t)>>
-    checkFunctions() noexcept { return *checkFuncTableMap_; }
+    std::map<int16_t, std::function<void(std::string, std::int16_t)>> checkFunctions() noexcept { return *checkFuncTableMap_; }
 
     void changeCheckStatus(bool status);
 

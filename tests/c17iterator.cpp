@@ -8,12 +8,18 @@
 #include <ctime>
 #include <typeinfo>
 
-#include "ConformanceException.h"
-#include "ConformanceConstraints.h"
+#include "../ConformanceException.h"
+#include "../ConformanceConstraints.h"
 
 using namespace conformance::exception;
 using namespace conformance::constraints;
 using namespace std;
+
+//    enum ConstraintDefEvalStatus : std::int16_t {
+//        SUCCESS = 0,
+//        CONDITIONAL_SUCCESS = 1,
+//        FAILURE = 2,
+//    };
 
 
     const std::string MPDEXT = ".mpd";
@@ -72,6 +78,14 @@ int main() {
     }
 
     cout << "Exception Description: " << descLong << std::endl;
+
+    conformance::constraints::ConstraintDefEvalStatus stat1 = conformance::constraints::ConstraintDefEvalStatus::SUCCESS;
+    conformance::constraints::ConstraintDefEvalStatus stat2 = conformance::constraints::ConstraintDefEvalStatus::CONDITIONAL_SUCCESS;
+
+    int16_t status = stat1 + stat2;
+    ConstraintDefEvalStatus result = static_cast<ConstraintDefEvalStatus>(status);
+
+    cout << typeid(stat1).name() << " " << typeid(stat2).name() << " " << typeid(status).name() << " " << static_cast<int16_t>(result) << endl;
 
     // your code goes here
     return 0;

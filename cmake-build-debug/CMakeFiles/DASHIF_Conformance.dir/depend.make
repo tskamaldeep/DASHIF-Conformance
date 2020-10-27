@@ -27,8 +27,6 @@ CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o: ../Conforma
 
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o: ../ConformanceMPDParser.cpp
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o: ../ConformanceMPDParser.h
-CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o: ../external-includes/xercesc/dom/DOM.hpp
-CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o: ../external-includes/xercesc/util/PlatformUtils.hpp
 
 CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o: ../ConformanceConstraints.h
 CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o: ../ConformanceErrorLevels.h

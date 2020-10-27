@@ -5,13 +5,14 @@
 #ifndef DASHIF_CONFORMANCE_CONFORMANCETESTTIMER_H
 #define DASHIF_CONFORMANCE_CONFORMANCETESTTIMER_H
 
-namespace conformance::constraints {
-
 #include <cmath>
 #include <chrono>
 #include <ctime>
 #include <thread>
 #include "ConformanceConstraints.h"
+
+namespace conformance::constraints {
+
 
 #define INVALID_CHECK_TIME -1
 #define CONSTRAINT_TYPE conformance::constraints::ConstraintTypes
@@ -48,6 +49,10 @@ namespace conformance::constraints {
         std::thread::id timerID = timerthread->get_id();
         // Sync with the conformance check thread.
 
+    public:
+        // Placeholder constructors.
+        ConformanceTestTimer();
+        ~ConformanceTestTimer();
 
     };
 }

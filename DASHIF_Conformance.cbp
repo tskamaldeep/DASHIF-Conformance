@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="DASHIF_Conformance"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="DASHIF_Conformance">
+				<Option output="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/libDASHIF_Conformance.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 DASHIF_Conformance"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="DASHIF_Conformance/fast">
+				<Option output="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/libDASHIF_Conformance.dylib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 DASHIF_Conformance/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceErrorLevels.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceErrorLevels.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceExceptionTypes.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceMPDCheckSequence.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceMPDCheckSequence.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceMPDParser.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceMPDParser.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceTestTimer.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceTestTimer.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/library.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/library.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/addTimestampDetails.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/catchinit.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.cpp">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.h">
+			<Option target="DASHIF_Conformance"/>
+		</Unit>
+		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
