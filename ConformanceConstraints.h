@@ -73,6 +73,11 @@ namespace conformance::constraints {
     // Max version limit for constraint version.
     const std::string MAX_CONSTRAINT_VERSION = "4.3";
 
+    // Reasonable values for segment durations are between 1 second and 10 seconds.
+    // Create strings for entity vals and use the datatypes for reading from the std::pairs later when setting
+    // the expected and observed entity vals.
+    const std::string MAX_IOP_SEGMENT_DURATION = "10";
+
 
     enum ConstraintTypes : std::int16_t {
         ContentGenerationConstraints = 0,
@@ -132,8 +137,8 @@ namespace conformance::constraints {
         const std::string entityID_;
         const std::string entitydesc_;
         std::string entitydatatype_;
-        std::map<std::size_t, std::list<ConstraintEntity*>> *subentities_ =
-                new std::map<std::size_t, std::list<ConstraintEntity*>>();
+        std::list<ConstraintEntity*> *celist = new std::list<ConstraintEntity*>();
+        std::map<std::size_t, std::list<ConstraintEntity*>> *subentities_;
 
         // Make the ConstraintDefinition class a friend class maybe?
 
@@ -142,7 +147,9 @@ namespace conformance::constraints {
                 entityname_(entityname), entitydesc_(entitydesc), entitydatatype_(entitydatatype) {
 
             std::list<ConstraintEntity*> celist = {};
-            subentities_->insert_or_assign(conformance::exception::hashnum(entityname), celist);
+
+            // TODO: List subentities. Add/append logic pending.
+            //subentities_->insert_or_assign(new std::pair<std::size_t, std::list<ConstraintEntity*>>(conformance::exception::hashnum(entityname), celist));
         };
 
         const std::string entityName() { return entityname_; }
@@ -186,8 +193,11 @@ namespace conformance::constraints {
         std::string observedConstraintVal_;
 
         ConstraintDefEvalStatus defStatus_;
-        ConstraintDefEvalStatus valForCombinatorialAndDefinition(int16_t result1, int16_t result2);
-        ConstraintDefEvalStatus valForCombinatorialOrDefinition(int16_t result1, int16_t result2);
+        ConstraintDefEvalStatus valForCombinatorialAndDefinition(ConstraintDefEvalStatus result1, ConstraintDefEvalStatus result2);
+        ConstraintDefEvalStatus valForCombinatorialOrDefinition(ConstraintDefEvalStatus result1, ConstraintDefEvalStatus result2);
+
+        // Define the conditional eval status return.
+        ConstraintDefEvalStatus valForCombinatorialConditionalDefinition(ConstraintDefEvalStatus result1, ConstraintDefEvalStatus result2);
 
     public:
         ConstraintDefinition(std::string, std::string, ConstraintEntity &);
@@ -220,12 +230,38 @@ namespace conformance::constraints {
 
             ConstraintDefEvalStatus mainresult = this->constraintDefEvalStatus();
             ConstraintDefEvalStatus cdefresult = cdef->constraintDefEvalStatus();
-            int16_t andoutput = mainresult + cdefresult;
+            ConstraintDefEvalStatus result = valForCombinatorialAndDefinition(mainresult, cdefresult);
 
-            const std::string definitionDesc = this->constraintName() + "AND" + cdef->constraintName();
-            ConstraintDefinition *output = new ConstraintDefinition(constraintName(), definitionDesc, *mainentity);
+            return result;
+        }
 
-            output->setConstraintEnforcementForDefinition(cdef->constraintEnforcementFromDefinition());
+        ConstraintDefEvalStatus operator||(ConstraintDefinition *cdef) {
+            // Does cdef and the current definition always have the same entity?
+            // Let's assume for now.
+            ConstraintEntity *mainentity = this->constraintEntityFromDefinition();
+            ConstraintEntity *cdefentity = cdef->constraintEntityFromDefinition();
+
+            if (mainentity != cdefentity) {
+                return ConstraintDefEvalStatus::FAILURE;
+            }
+
+            ConstraintDefEvalStatus mainresult = this->constraintDefEvalStatus();
+            ConstraintDefEvalStatus cdefresult = cdef->constraintDefEvalStatus();
+            ConstraintDefEvalStatus result = valForCombinatorialOrDefinition(mainresult, cdefresult);
+
+            return result;
+        }
+
+        ConstraintDefEvalStatus operator|(ConstraintDefinition *cdef) {
+            // Operator for conditional definition status check.
+            // Does cdef and the current definition always have the same entity?
+            // Let's assume for now.
+
+            ConstraintDefEvalStatus mainresult = this->constraintDefEvalStatus();
+            ConstraintDefEvalStatus cdefresult = cdef->constraintDefEvalStatus();
+            ConstraintDefEvalStatus result = valForCombinatorialConditionalDefinition(mainresult, cdefresult);
+
+            return result;
         }
 
         void setConstraintEnforcementForDefinition(ConformanceEnforcementTypes cetype) {
@@ -242,9 +278,9 @@ namespace conformance::constraints {
 
         std::string constructDescriptionForConformanceConstraint(ConstraintEntity& );
 
-        void setConstraintDefEvalStatus(ConstraintDefEvalStatus);
+        void setConstraintDefEvalStatus(ConstraintDefEvalStatus status) {defStatus_ = status; }
 
-        ConstraintDefEvalStatus findStatusForDefinition() const;
+        //ConstraintDefEvalStatus findStatusForDefinition() const;
 
         ~ConstraintDefinition() {};
 

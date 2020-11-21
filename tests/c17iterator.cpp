@@ -10,9 +10,11 @@
 
 #include "../ConformanceException.h"
 #include "../ConformanceConstraints.h"
+#include "../ConformanceMPDCheckSequence.h"
 
 using namespace conformance::exception;
 using namespace conformance::constraints;
+using namespace conformance::download;
 using namespace std;
 
 //    enum ConstraintDefEvalStatus : std::int16_t {

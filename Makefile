@@ -331,87 +331,6 @@ library.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/library.cpp.s
 .PHONY : library.cpp.s
 
-tests/addTimestampDetails.o: tests/addTimestampDetails.cpp.o
-
-.PHONY : tests/addTimestampDetails.o
-
-# target to build an object file
-tests/addTimestampDetails.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o
-.PHONY : tests/addTimestampDetails.cpp.o
-
-tests/addTimestampDetails.i: tests/addTimestampDetails.cpp.i
-
-.PHONY : tests/addTimestampDetails.i
-
-# target to preprocess a source file
-tests/addTimestampDetails.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.i
-.PHONY : tests/addTimestampDetails.cpp.i
-
-tests/addTimestampDetails.s: tests/addTimestampDetails.cpp.s
-
-.PHONY : tests/addTimestampDetails.s
-
-# target to generate assembly for a file
-tests/addTimestampDetails.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.s
-.PHONY : tests/addTimestampDetails.cpp.s
-
-tests/catchinit.o: tests/catchinit.cpp.o
-
-.PHONY : tests/catchinit.o
-
-# target to build an object file
-tests/catchinit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o
-.PHONY : tests/catchinit.cpp.o
-
-tests/catchinit.i: tests/catchinit.cpp.i
-
-.PHONY : tests/catchinit.i
-
-# target to preprocess a source file
-tests/catchinit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.i
-.PHONY : tests/catchinit.cpp.i
-
-tests/catchinit.s: tests/catchinit.cpp.s
-
-.PHONY : tests/catchinit.s
-
-# target to generate assembly for a file
-tests/catchinit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.s
-.PHONY : tests/catchinit.cpp.s
-
-tests/testConformanceException.o: tests/testConformanceException.cpp.o
-
-.PHONY : tests/testConformanceException.o
-
-# target to build an object file
-tests/testConformanceException.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o
-.PHONY : tests/testConformanceException.cpp.o
-
-tests/testConformanceException.i: tests/testConformanceException.cpp.i
-
-.PHONY : tests/testConformanceException.i
-
-# target to preprocess a source file
-tests/testConformanceException.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.i
-.PHONY : tests/testConformanceException.cpp.i
-
-tests/testConformanceException.s: tests/testConformanceException.cpp.s
-
-.PHONY : tests/testConformanceException.s
-
-# target to generate assembly for a file
-tests/testConformanceException.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.s
-.PHONY : tests/testConformanceException.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -442,15 +361,6 @@ help:
 	@echo "... library.o"
 	@echo "... library.i"
 	@echo "... library.s"
-	@echo "... tests/addTimestampDetails.o"
-	@echo "... tests/addTimestampDetails.i"
-	@echo "... tests/addTimestampDetails.s"
-	@echo "... tests/catchinit.o"
-	@echo "... tests/catchinit.i"
-	@echo "... tests/catchinit.s"
-	@echo "... tests/testConformanceException.o"
-	@echo "... tests/testConformanceException.i"
-	@echo "... tests/testConformanceException.s"
 .PHONY : help
 
 

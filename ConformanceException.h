@@ -33,7 +33,7 @@ namespace conformance::exception {
 
         ConformanceException &operator=(const ConformanceException &) noexcept;
 
-        ~ConformanceException() noexcept override;
+        ~ConformanceException() = default;
 
         const char *what() const noexcept override {
             return exceptionstrlong_.c_str();

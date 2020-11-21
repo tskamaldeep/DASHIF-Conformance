@@ -114,7 +114,7 @@ namespace conformance::exception {
 
         ConformanceErrorLevels( ConformanceEnforcementTypes);
 
-        ~ConformanceErrorLevels();
+        ~ConformanceErrorLevels() = default;
 
         void setDefaultConformanceErrorLevel(ConformanceErrorTypes errorLevel);
 
