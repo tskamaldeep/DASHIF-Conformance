@@ -6,10 +6,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o"
   "CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o"
   "CMakeFiles/DASHIF_Conformance.dir/library.cpp.o"
-  "CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o"
-  "CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o"
-  "CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o"
-  "libDASHIF_Conformance.dylib"
+  "libDASHIF_Conformance.a"
   "libDASHIF_Conformance.pdb"
 )
 

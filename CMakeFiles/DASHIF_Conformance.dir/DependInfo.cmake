@@ -11,16 +11,8 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceMPDParser.cpp" "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o"
   "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceTestTimer.cpp" "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o"
   "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/library.cpp" "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles/DASHIF_Conformance.dir/library.cpp.o"
-  "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/addTimestampDetails.cpp" "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o"
-  "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/catchinit.cpp" "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o"
-  "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.cpp" "/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
-
-# Preprocessor definitions for this target.
-set(CMAKE_TARGET_DEFINITIONS_CXX
-  "DASHIF_Conformance_EXPORTS"
-  )
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

@@ -66,9 +66,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance">
-			<Option target="DASHIF_Conformance"/>
-		</Unit>
 		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.cpp">
 			<Option target="DASHIF_Conformance"/>
 		</Unit>
@@ -112,18 +109,6 @@
 			<Option target="DASHIF_Conformance"/>
 		</Unit>
 		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/library.h">
-			<Option target="DASHIF_Conformance"/>
-		</Unit>
-		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/addTimestampDetails.cpp">
-			<Option target="DASHIF_Conformance"/>
-		</Unit>
-		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/catchinit.cpp">
-			<Option target="DASHIF_Conformance"/>
-		</Unit>
-		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.cpp">
-			<Option target="DASHIF_Conformance"/>
-		</Unit>
-		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.h">
 			<Option target="DASHIF_Conformance"/>
 		</Unit>
 		<Unit filename="/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeLists.txt">

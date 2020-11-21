@@ -167,45 +167,6 @@ CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceMPDParser.cpp -o CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.s
 
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: CMakeFiles/DASHIF_Conformance.dir/flags.make
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: tests/testConformanceException.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o -c /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.cpp
-
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.cpp > CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.i
-
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/testConformanceException.cpp -o CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.s
-
-CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o: CMakeFiles/DASHIF_Conformance.dir/flags.make
-CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o: tests/catchinit.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o -c /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/catchinit.cpp
-
-CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/catchinit.cpp > CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.i
-
-CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/catchinit.cpp -o CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.s
-
-CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o: CMakeFiles/DASHIF_Conformance.dir/flags.make
-CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o: tests/addTimestampDetails.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o -c /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/addTimestampDetails.cpp
-
-CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/addTimestampDetails.cpp > CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.i
-
-CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/tests/addTimestampDetails.cpp -o CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.s
-
 # Object files for target DASHIF_Conformance
 DASHIF_Conformance_OBJECTS = \
 "CMakeFiles/DASHIF_Conformance.dir/library.cpp.o" \
@@ -214,31 +175,26 @@ DASHIF_Conformance_OBJECTS = \
 "CMakeFiles/DASHIF_Conformance.dir/ConformanceConstraints.cpp.o" \
 "CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o" \
 "CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o" \
-"CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o" \
-"CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o" \
-"CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o" \
-"CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o"
+"CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o"
 
 # External object files for target DASHIF_Conformance
 DASHIF_Conformance_EXTERNAL_OBJECTS =
 
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/library.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/ConformanceErrorLevels.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/ConformanceException.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/ConformanceConstraints.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/build.make
-libDASHIF_Conformance.dylib: CMakeFiles/DASHIF_Conformance.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX shared library libDASHIF_Conformance.dylib"
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/library.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/ConformanceErrorLevels.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/ConformanceException.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/ConformanceConstraints.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/build.make
+libDASHIF_Conformance.a: CMakeFiles/DASHIF_Conformance.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libDASHIF_Conformance.a"
+	$(CMAKE_COMMAND) -P CMakeFiles/DASHIF_Conformance.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/DASHIF_Conformance.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/DASHIF_Conformance.dir/build: libDASHIF_Conformance.dylib
+CMakeFiles/DASHIF_Conformance.dir/build: libDASHIF_Conformance.a
 
 .PHONY : CMakeFiles/DASHIF_Conformance.dir/build
 

@@ -6,33 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.cpp
-type_traits
--
-string
--
-cstdlib
--
-ConformanceConstraints.h
-/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.h
-
-/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceConstraints.h
-ConformanceErrorLevels.h
-/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceErrorLevels.h
-iostream
--
-
-/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceErrorLevels.h
-cstdint
--
-iterator
--
-typeinfo
--
-list
--
+/Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.cpp
 ConformanceException.h
 /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.h
+iostream
+-
+ctime
+-
 
 /Users/tskamaldeep/CLionProjects/DASHIF-Conformance/ConformanceException.h
 ConformanceExceptionTypes.h

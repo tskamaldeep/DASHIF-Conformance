@@ -23,7 +23,6 @@ CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o: Conformance
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o: ConformanceExceptionTypes.h
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o: ConformanceMPDCheckSequence.cpp
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o: ConformanceMPDCheckSequence.h
-CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.o: ConformanceTestTimer.h
 
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o: ConformanceMPDParser.cpp
 CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDParser.cpp.o: ConformanceMPDParser.h
@@ -37,15 +36,4 @@ CMakeFiles/DASHIF_Conformance.dir/ConformanceTestTimer.cpp.o: ConformanceTestTim
 
 CMakeFiles/DASHIF_Conformance.dir/library.cpp.o: library.cpp
 CMakeFiles/DASHIF_Conformance.dir/library.cpp.o: library.h
-
-CMakeFiles/DASHIF_Conformance.dir/tests/addTimestampDetails.cpp.o: tests/addTimestampDetails.cpp
-
-CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o: tests/catch.hpp
-CMakeFiles/DASHIF_Conformance.dir/tests/catchinit.cpp.o: tests/catchinit.cpp
-
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: ConformanceException.h
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: ConformanceExceptionTypes.h
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: tests/catch.hpp
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: tests/testConformanceException.cpp
-CMakeFiles/DASHIF_Conformance.dir/tests/testConformanceException.cpp.o: tests/testConformanceException.h
 
