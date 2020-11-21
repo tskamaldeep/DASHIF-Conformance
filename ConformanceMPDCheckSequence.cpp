@@ -164,6 +164,8 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdur
     for (int16_t enumIter = MPDCheckSequence::URLValidityCheck; enumIter != MPDCheckSequence::VersionsCheck+1; enumIter++) {
         switch (enumIter) {
             case MPDCheckSequence::URLValidityCheck: {
+                // Look to assign the function to the iterator.
+
                 break;
             }
 
