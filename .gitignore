@@ -3,5 +3,6 @@
 strsubst
 !tests/*.cpp
 CMakeFiles/
+CMakeCache.txt
 external-includes/
 typecheck
