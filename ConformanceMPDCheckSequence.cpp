@@ -81,12 +81,13 @@ bool ConformanceMPDCheckSequence::manifestTypeCheck() {
     bool status = true;
 
     std::array<int16_t, 2>::iterator *mpdtypecheckIter = new std::array<int16_t, 2>::iterator();
-    for (*mpdtypecheckIter=MPDResponseConstraints_->begin(); *mpdtypecheckIter!=MPDResponseConstraints_->end(); mpdtypecheckIter++) {
-        constraints::ConformanceConstraint *typeConstraint = reinterpret_cast<constraints::ConformanceConstraint*>(*mpdtypecheckIter);
+    for (*mpdtypecheckIter = MPDResponseConstraints_->begin();
+         *mpdtypecheckIter != MPDResponseConstraints_->end(); mpdtypecheckIter++) {
+        constraints::ConformanceConstraint *typeConstraint = reinterpret_cast<constraints::ConformanceConstraint *>(*mpdtypecheckIter);
         // Get the set of definitions associated with the provided constraint of MPD type checks.
 
     }
-     return status;
+    return status;
 }
 
 bool ConformanceMPDCheckSequence::refreshIntervalCheck() {
@@ -130,6 +131,25 @@ bool ConformanceMPDCheckSequence::versionsCheck() {
     return true;
 }
 
+void ConformanceMPDCheckSequence::changeCheckStatus(int16_t status) {
+    if (status > MPDCHECK_THREADSTATUS::CLEANUP_STATUS ||
+        status < MPDCHECK_THREADSTATUS::INIT_STATUS) {
+        // Prepare and send a ConformanceException?
+        std::cerr << "Invalid status provided for updation" << std::endl;
+        return;
+    }
+
+    int16_t curstatus = this->checkStatus();
+    if (curstatus == MPDCHECK_THREADSTATUS::SUSPENDED_STATUS &&
+    status < curstatus &&
+    status != MPDCHECK_THREADSTATUS::PROGRESS_STATUS) {
+       // std::cerr << "Invalid status std::string(status) " << "Current Status: " << MPDCHECK_THREADSTATUS::SUSPENDED_STATUS << endl;
+    }
+    ///////////////////////////////
+    // TODO:
+    ///////////////////////////////
+}
+
 void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_t status) {
     try {
         // Availability implies: presence on the server + download capability.
@@ -160,149 +180,59 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdur
     this->setMPDURLSchemeType(urlscheme);
     // std::map<int16_t, std::function<void (std::string, std::int16_t)>> cfmap = this->checkFunctions();
 
+    // Carry the check functions map.
+    CHECKFUNCTIONSMAP *checkfuncs = this->checkFunctions();
+
     // Create a function table for each of the enumerated checks.
-    for (int16_t enumIter = MPDCheckSequence::URLValidityCheck; enumIter != MPDCheckSequence::VersionsCheck+1; enumIter++) {
+
+    for (int16_t enumIter = MPDCheckSequence::URLValidityCheck;
+         enumIter != MPDCheckSequence::VersionsCheck + 1; enumIter++) {
         switch (enumIter) {
             case MPDCheckSequence::URLValidityCheck: {
-                // Look to assign the function to the iterator.
-
+                // checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
+                // checkfuncs->insert_or_assign(enumIter, std::make_pair(enumIter, &ConformanceMPDCheckSequence::checkURLValidity));
                 break;
             }
 
             case MPDCheckSequence::AvailabilityCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::checkMPDAvailability);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-                // std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::checkMPDAvailability,
-                                                    // &ConformanceMPDCheckSequence::CheckCallback);
-                // cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
+//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkMPDAvailability);
                 break;
             }
 
             case MPDCheckSequence::RedirectResponseCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::redirectResponseCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::redirectResponseCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
+//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::redirectResponseCheck);
                 break;
             }
 
             case MPDCheckSequence::ManifestTypeCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::manifestTypeCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::manifestTypeCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::RefreshIntervalCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::refreshIntervalCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::manifestTypeCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::TimestampValidityCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::timestampValidityCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::timestampValidityCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::DRMPresenceCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::drmPresenceCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::drmPresenceCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::SecureStreamCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::secureStreamCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::secureStreamCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::KeyServerAvailabilityCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::keyServerAvailabilityCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::keyServerAvailabilityCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::CodecSupportCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::codecSupportCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::codecSupportCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
             case MPDCheckSequence::VersionsCheck: {
-                // Add the URLValidity check function and callback pair to the function table.
-//                auto cffunc1 = std::mem_fn(&ConformanceMPDCheckSequence::versionsCheck);
-//                auto cffunc2 = std::mem_fn(&ConformanceMPDCheckSequence::CheckCallback);
-//
-//                std::pair cfpair = std::make_pair(cffunc1, cffunc2);
-//                cfmap->insert_or_assign(enumIter, cfpair);
-
-//                std::pair funcpair = std::make_pair(&ConformanceMPDCheckSequence::versionsCheck,
-//                                                    &ConformanceMPDCheckSequence::CheckCallback);
-//                cfmap.try_emplace(enumIter, &ConformanceMPDCheckSequence::CheckCallback);
                 break;
             }
 
