@@ -14,6 +14,7 @@
 #include <thread>
 
 #include <array>
+#include <float.h>
 #include "ConformanceConstraints.h"
 #include "ConformanceException.h"
 
@@ -149,6 +150,12 @@ namespace conformance::download {
         CHECKTIMESTAMPTYPE *stoppedSystemTimeStamp() {return stoppedStatusTime_; }
 
         CHECKTIMESTAMPTYPE *cleanupSystemTimeStamp() {return cleanupStatusTime_; }
+
+        double timeDiffInMilliSeconds(CHECKTIMESTAMPTYPE latertime, CHECKTIMESTAMPTYPE earliertime);
+
+        double timeDiffInSeconds(CHECKTIMESTAMPTYPE latertime, CHECKTIMESTAMPTYPE earliertime);
+
+        double timeDiffInMinutes(CHECKTIMESTAMPTYPE latertime, CHECKTIMESTAMPTYPE earliertime);
 
         void changeCheckStatus(int16_t status);
 

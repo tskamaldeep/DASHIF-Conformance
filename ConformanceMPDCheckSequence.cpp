@@ -131,6 +131,32 @@ bool ConformanceMPDCheckSequence::versionsCheck() {
     return true;
 }
 
+double ConformanceMPDCheckSequence::timeDiffInMilliSeconds(std::chrono::system_clock::time_point latertime,
+                                                  std::chrono::system_clock::time_point earliertime) {
+
+    std::size_t epochMilliSecsLaterTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+            latertime.time_since_epoch()).count();
+
+    std::size_t epochMilliSecsEarlierTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+            earliertime.time_since_epoch()).count();
+
+    return (epochMilliSecsLaterTime - epochMilliSecsEarlierTime);
+}
+
+double ConformanceMPDCheckSequence::timeDiffInSeconds(std::chrono::system_clock::time_point latertime,
+                                                           std::chrono::system_clock::time_point earliertime) {
+
+    double milliSecs = this->timeDiffInMilliSeconds(latertime, earliertime);
+    return (((float) milliSecs)/1000);
+}
+
+double ConformanceMPDCheckSequence::timeDiffInMinutes(std::chrono::system_clock::time_point latertime,
+                                                      std::chrono::system_clock::time_point earliertime) {
+
+    double secs = this->timeDiffInSeconds(latertime, earliertime);
+    return (((float) secs)/60);
+}
+
 void ConformanceMPDCheckSequence::changeCheckStatus(int16_t status) {
     if (status > MPDCHECK_THREADSTATUS::CLEANUP_STATUS ||
         status < MPDCHECK_THREADSTATUS::INIT_STATUS) {
