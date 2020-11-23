@@ -143,11 +143,42 @@ void ConformanceMPDCheckSequence::changeCheckStatus(int16_t status) {
     if (curstatus == MPDCHECK_THREADSTATUS::SUSPENDED_STATUS &&
     status < curstatus &&
     status != MPDCHECK_THREADSTATUS::PROGRESS_STATUS) {
-       // std::cerr << "Invalid status std::string(status) " << "Current Status: " << MPDCHECK_THREADSTATUS::SUSPENDED_STATUS << endl;
+       std::cerr << "Invalid status updation:\n " << "Current Status: " << endl;
+       return;
     }
     ///////////////////////////////
     // TODO:
     ///////////////////////////////
+
+    try {
+        checkStatus_ = std::move(status);
+
+        switch (status) {
+            case (INIT_STATUS):
+                initStatusTime_ = this->currentSystemTime();
+                break;
+            case (STARTED_STATUS):
+                *startedStatusTime_ = this->currentSystemTime();
+                break;
+            case (PROGRESS_STATUS):
+                *progressStatusTime_ = this->currentSystemTime();
+                break;
+            case (SUSPENDED_STATUS):
+                *suspendedStatusTime_ = this->currentSystemTime();
+                break;
+            case (STOPPED_STATUS):
+                *stoppedStatusTime_ = this->currentSystemTime();
+                break;
+            case (CLEANUP_STATUS):
+                *cleanupStatusTime_ = this->currentSystemTime();
+                break;
+            default:
+                break;
+        }
+    }
+    catch (std::exception &e) {
+        std::cerr << "Change status of MPD Check Sequence Exception:\n " << e.what() << std::endl;
+    }
 }
 
 void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_t status) {

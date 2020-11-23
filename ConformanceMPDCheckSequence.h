@@ -138,6 +138,18 @@ namespace conformance::download {
 
         CHECKTIMESTAMPTYPE currentSystemTime() { return std::chrono::system_clock::now(); }
 
+        CHECKTIMESTAMPTYPE initSystemTimeStamp() {return initStatusTime_; }
+
+        CHECKTIMESTAMPTYPE *startedSystemTimeStamp() {return startedStatusTime_; }
+
+        CHECKTIMESTAMPTYPE *progressSystemTimeStamp() {return progressStatusTime_; }
+
+        CHECKTIMESTAMPTYPE *suspendedSystemTimeStamp() {return suspendedStatusTime_; }
+
+        CHECKTIMESTAMPTYPE *stoppedSystemTimeStamp() {return stoppedStatusTime_; }
+
+        CHECKTIMESTAMPTYPE *cleanupSystemTimeStamp() {return cleanupStatusTime_; }
+
         void changeCheckStatus(int16_t status);
 
         // const __thread_id initiateConformanceCheck() const;
