@@ -131,7 +131,7 @@ bool ConformanceMPDCheckSequence::versionsCheck() {
 }
 
 double ConformanceMPDCheckSequence::timeDiffInMilliSeconds(std::chrono::system_clock::time_point latertime,
-                                                  std::chrono::system_clock::time_point earliertime) {
+                                                           std::chrono::system_clock::time_point earliertime) {
 
     std::size_t epochMilliSecsLaterTime = std::chrono::duration_cast<std::chrono::milliseconds>(
             latertime.time_since_epoch()).count();
@@ -143,17 +143,17 @@ double ConformanceMPDCheckSequence::timeDiffInMilliSeconds(std::chrono::system_c
 }
 
 double ConformanceMPDCheckSequence::timeDiffInSeconds(std::chrono::system_clock::time_point latertime,
-                                                           std::chrono::system_clock::time_point earliertime) {
+                                                      std::chrono::system_clock::time_point earliertime) {
 
     double milliSecs = this->timeDiffInMilliSeconds(latertime, earliertime);
-    return (((float) milliSecs)/1000);
+    return (((float) milliSecs) / 1000);
 }
 
 double ConformanceMPDCheckSequence::timeDiffInMinutes(std::chrono::system_clock::time_point latertime,
                                                       std::chrono::system_clock::time_point earliertime) {
 
     double secs = this->timeDiffInSeconds(latertime, earliertime);
-    return (((float) secs)/60);
+    return (((float) secs) / 60);
 }
 
 void ConformanceMPDCheckSequence::changeCheckStatus(int16_t status) {
@@ -166,10 +166,10 @@ void ConformanceMPDCheckSequence::changeCheckStatus(int16_t status) {
 
     int16_t curstatus = this->checkStatus();
     if (curstatus == MPDCHECK_THREADSTATUS::SUSPENDED_STATUS &&
-    status < curstatus &&
-    status != MPDCHECK_THREADSTATUS::PROGRESS_STATUS) {
-       std::cerr << "Invalid status updation:\n " << "Current Status: " << endl;
-       return;
+        status < curstatus &&
+        status != MPDCHECK_THREADSTATUS::PROGRESS_STATUS) {
+        std::cerr << "Invalid status updation:\n " << "Current Status: " << endl;
+        return;
     }
     ///////////////////////////////
     // TODO:
@@ -245,6 +245,7 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdur
          enumIter != MPDCheckSequence::VersionsCheck + 1; enumIter++) {
         switch (enumIter) {
             case MPDCheckSequence::URLValidityCheck: {
+//                checkfuncs->try_emplace(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
                 // checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
                 // checkfuncs->insert_or_assign(enumIter, std::make_pair(enumIter, &ConformanceMPDCheckSequence::checkURLValidity));
                 break;

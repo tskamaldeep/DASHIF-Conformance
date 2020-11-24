@@ -89,41 +89,50 @@ namespace conformance::download {
 
         // Applicable constraints for MPD Check.
         // TODO: Make the array to be per constraint type.
-        std::array<std::size_t, 2> *MPDTypeCheckConstraints = new std::array<std::size_t, 2>{
-            ConstraintTypes::DynamicMPDConstraints,
-            ConstraintTypes::StaticMPDConstraints
+        std::array<std::size_t, 2> *MPDTypeCheckConstraints = new std::array<std::size_t, 2> {
+                ConstraintTypes::DynamicMPDConstraints,
+                ConstraintTypes::StaticMPDConstraints
 
         };
 
-        std::array<std::size_t, 3> *AdaptationSetConstraints = new std::array<std::size_t, 3>{
-            ConstraintTypes::VideoAdaptationSetConstraints,
-            ConstraintTypes::AudioAdaptationSetConstraints,
-            ConstraintTypes::TextAdaptationSetConstraints
+        std::array<std::size_t, 3> *AdaptationSetConstraints = new std::array<std::size_t, 3> {
+                ConstraintTypes::VideoAdaptationSetConstraints,
+                ConstraintTypes::AudioAdaptationSetConstraints,
+                ConstraintTypes::TextAdaptationSetConstraints
         };
 
-        std::array<std::size_t, 2> *MPDResponseConstraints_ = new std::array<std::size_t, 2>{
+        std::array<std::size_t, 4> *MPDResponseConstraints_ = new std::array<std::size_t, 4> {
                 ConstraintTypes::HTTPSDownloadConstraints,
-                ConstraintTypes::CaptioningMediaConstraints
+                ConstraintTypes::CaptioningMediaConstraints,
+                ConstraintTypes::EndOfLiveConstraints,
+                ConstraintTypes::MPDUpdateConstraints
         };
 
-        std::array<std::size_t, 2> *drmPresenceCheckConstraints = new std::array<std::size_t , 2>{
+        std::array<std::size_t, 2> *drmPresenceCheckConstraints = new std::array<std::size_t, 2> {
                 ConstraintTypes::EncryptedMediaConstraints,
                 ConstraintTypes::KeyServerConstraints
         };
 
-        std::array<std::size_t, 2> *codecConstraints = new std::array<std::size_t , 2>{
+        std::array<std::size_t, 2> *codecConstraints = new std::array<std::size_t, 2> {
                 ConstraintTypes::ContentGenerationConstraints,
                 ConstraintTypes::CMediaSegmentConstraints
         };
 
-        std::array<std::size_t, 3> *clockConstraints = new std::array<std::size_t, 3>{
+        std::array<std::size_t, 2> *clockConstraints = new std::array<std::size_t, 2> {
                 ConstraintTypes::ClockConstraints,
-                ConstraintTypes::MPDUpdateConstraints,
                 ConstraintTypes::MPDTimelineConstraints
         };
 
-        std::array<std::size_t, 1> *versionConstraints = new std::array<std::size_t, 1>{
+        std::array<std::size_t, 1> *versionConstraints = new std::array<std::size_t, 1> {
                 ConstraintTypes::VersionsConstraints
+        };
+
+        std::array<std::size_t, 1> *dvbConstraints = new std::array<std::size_t, 1> {
+                ConstraintTypes::DVBDASHConstraints
+        };
+
+        std::array<std::size_t, 1> *tokenConstraints = new std::array<std::size_t, 1> {
+                ConstraintTypes::AkamaiCDNTokenConstraints
         };
 
         // TODO: Define clock for timing checks. Alternatively, implement the test timer class.
