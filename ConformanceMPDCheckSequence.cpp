@@ -209,8 +209,31 @@ void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_
         // TODO: Apply mutex with a try_lock
         // checkmtx_.try_lock();
 
-        if (bool(status) != this->checkStatus()) {
-            changeCheckStatus(bool(status));
+        CHECKTIMESTAMPTYPE curtime = this->currentSystemTime();
+        std::int16_t curstatus = this->checkStatus();
+        processTime_ = this->timeDiffInSeconds(curtime, initStatusTime_);
+
+        switch (status) {
+            case (MPDCHECK_THREADSTATUS::INIT_STATUS):
+            case (MPDCHECK_THREADSTATUS::STARTED_STATUS):
+            case (MPDCHECK_THREADSTATUS::PROGRESS_STATUS):
+            case (MPDCHECK_THREADSTATUS::SUSPENDED_STATUS):
+            case (MPDCHECK_THREADSTATUS::STOPPED_STATUS):
+            case (MPDCHECK_THREADSTATUS::CLEANUP_STATUS): {
+                cerr << "Current constraint check was an error after " << processTime_
+                     << " seconds from INIT state." << endl;
+                cerr << "Current Status: " << status << endl;
+                cerr << "Previous known status: " << curstatus << endl;
+                break;
+            }
+            default: {
+                cerr << "Unidentified current status for the result check routine." << endl;
+                break;
+            }
+        }
+
+        if (bool(status) != curstatus) {
+            this->changeCheckStatus(bool(status));
         }
     }
     catch (std::exception &e) {
@@ -220,15 +243,17 @@ void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_
     }
 }
 
-ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdurl) : mpdurl_(mpdurl) {
+ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
+        const std::string mpdurl) : mpdurl_(mpdurl) {
 
     // Find the schema type:
     std::string murl = this->MPDURL();
 
     // Find the URLscheme through prefix match.
-    MPDURLSCHEMETYPE urlscheme = murl.substr(0, murl.find(HTTPPREFIX)).length() > 0 ? MPDURLSCHEMETYPE::HTTP_PREFIX :
-                                 (murl.substr(0, murl.find(HTTPSPREFIX)).length() > 0 ? MPDURLSCHEMETYPE::HTTPS_PREFIX :
-                                  MPDURLSCHEMETYPE::INVALID_PREFIX);
+    MPDURLSCHEMETYPE urlscheme =
+            murl.substr(0, murl.find(HTTPPREFIX)).length() > 0 ? MPDURLSCHEMETYPE::HTTP_PREFIX :
+            (murl.substr(0, murl.find(HTTPSPREFIX)).length() > 0 ? MPDURLSCHEMETYPE::HTTPS_PREFIX :
+             MPDURLSCHEMETYPE::INVALID_PREFIX);
     // Set the scheme type.
     this->setMPDURLSchemeType(urlscheme);
     // std::map<int16_t, std::function<void (std::string, std::int16_t)>> cfmap = this->checkFunctions();
@@ -242,7 +267,8 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdur
          enumIter != MPDCheckSequence::VersionsCheck + 1; enumIter++) {
         switch (enumIter) {
             case MPDCheckSequence::URLValidityCheck: {
-//                checkfuncs->try_emplace(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
+                // std::function<bool()> uvalidityfunc = std::mem_fn(&ConformanceMPDCheckSequence::checkURLValidity);
+                // checkfuncs->try_emplace(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
                 // checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
                 // checkfuncs->insert_or_assign(enumIter, std::make_pair(enumIter, &ConformanceMPDCheckSequence::checkURLValidity));
                 break;

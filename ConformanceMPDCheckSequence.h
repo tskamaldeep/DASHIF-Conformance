@@ -13,7 +13,7 @@
 // TODO: Add in threading per conformance check.
 #include <thread>
 #include <array>
-#include <float.h>
+#include <cfloat>
 
 #include "ConformanceConstraints.h"
 #include "ConformanceException.h"
@@ -80,6 +80,7 @@ namespace conformance::download {
 
         // Initialize the times.
         CHECKTIMESTAMPTYPE initStatusTime_ = currentSystemTime();
+        double processTime_ = 0;
 
         // Set to the uninitialized time instance. Then set when the mentioned phase begins.
         CHECKTIMESTAMPTYPE *startedStatusTime_ = NULL;
@@ -160,6 +161,8 @@ namespace conformance::download {
         CHECKTIMESTAMPTYPE currentSystemTime() { return std::chrono::system_clock::now(); }
 
         CHECKTIMESTAMPTYPE initSystemTimeStamp() { return initStatusTime_; }
+
+        double processSystemTime() { return processTime_; }
 
         CHECKTIMESTAMPTYPE *startedSystemTimeStamp() { return startedStatusTime_; }
 
