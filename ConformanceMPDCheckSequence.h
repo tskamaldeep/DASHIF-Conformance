@@ -12,9 +12,9 @@
 #include <optional>
 // TODO: Add in threading per conformance check.
 #include <thread>
-
 #include <array>
 #include <float.h>
+
 #include "ConformanceConstraints.h"
 #include "ConformanceException.h"
 
@@ -66,6 +66,9 @@ namespace conformance::download {
     const std::string HTTPPREFIX = "http://";
     const std::string HTTPSPREFIX = "https://";
 
+    // Namespace requirement here.
+    using namespace conformance::constraints;
+
     class ConformanceMPDCheckSequence {
     private:
         // Invoking multiple URL checks?
@@ -86,34 +89,41 @@ namespace conformance::download {
 
         // Applicable constraints for MPD Check.
         // TODO: Make the array to be per constraint type.
-        std::array<std::int16_t, 2> *MPDTypeCheckConstraints = new std::array<std::int16_t, 2>{
-                conformance::constraints::StaticMPDConstraints, \
-            conformance::constraints::DynamicMPDConstraints, \
-};
+        std::array<std::size_t, 2> *MPDTypeCheckConstraints = new std::array<std::size_t, 2>{
+            ConstraintTypes::DynamicMPDConstraints,
+            ConstraintTypes::StaticMPDConstraints
 
-        std::array<std::int16_t, 2> *MPDResponseConstraints_ = new std::array<std::int16_t, 2>{
-                conformance::constraints::HTTPSDownloadConstraints, \
-            conformance::constraints::CaptioningMediaConstraints, \
-};
-
-        std::array<std::int16_t, 2> *drmPresenceCheckConstraints = new std::array<std::int16_t, 2>{
-                conformance::constraints::EncryptedMediaConstraints, \
-            conformance::constraints::KeyServerConstraints
         };
 
-        std::array<std::int16_t, 2> *codecConstraints = new std::array<std::int16_t, 2>{
-                conformance::constraints::ContentGenerationConstraints, \
-            conformance::constraints::CMediaSegmentConstraints,
+        std::array<std::size_t, 3> *AdaptationSetConstraints = new std::array<std::size_t, 3>{
+            ConstraintTypes::VideoAdaptationSetConstraints,
+            ConstraintTypes::AudioAdaptationSetConstraints,
+            ConstraintTypes::TextAdaptationSetConstraints
         };
 
-        std::array<std::int16_t, 3> *clockConstraints = new std::array<std::int16_t, 3>{
-                conformance::constraints::ClockConstraints, \
-            conformance::constraints::MPDUpdateConstraints, \
-            conformance::constraints::MPDTimelineConstraints
+        std::array<std::size_t, 2> *MPDResponseConstraints_ = new std::array<std::size_t, 2>{
+                ConstraintTypes::HTTPSDownloadConstraints,
+                ConstraintTypes::CaptioningMediaConstraints
         };
 
-        std::array<std::int16_t, 1> *versionConstraints = new std::array<std::int16_t, 1>{
-                conformance::constraints::VersionsConstraints
+        std::array<std::size_t, 2> *drmPresenceCheckConstraints = new std::array<std::size_t , 2>{
+                ConstraintTypes::EncryptedMediaConstraints,
+                ConstraintTypes::KeyServerConstraints
+        };
+
+        std::array<std::size_t, 2> *codecConstraints = new std::array<std::size_t , 2>{
+                ConstraintTypes::ContentGenerationConstraints,
+                ConstraintTypes::CMediaSegmentConstraints
+        };
+
+        std::array<std::size_t, 3> *clockConstraints = new std::array<std::size_t, 3>{
+                ConstraintTypes::ClockConstraints,
+                ConstraintTypes::MPDUpdateConstraints,
+                ConstraintTypes::MPDTimelineConstraints
+        };
+
+        std::array<std::size_t, 1> *versionConstraints = new std::array<std::size_t, 1>{
+                ConstraintTypes::VersionsConstraints
         };
 
         // TODO: Define clock for timing checks. Alternatively, implement the test timer class.
@@ -139,17 +149,17 @@ namespace conformance::download {
 
         CHECKTIMESTAMPTYPE currentSystemTime() { return std::chrono::system_clock::now(); }
 
-        CHECKTIMESTAMPTYPE initSystemTimeStamp() {return initStatusTime_; }
+        CHECKTIMESTAMPTYPE initSystemTimeStamp() { return initStatusTime_; }
 
-        CHECKTIMESTAMPTYPE *startedSystemTimeStamp() {return startedStatusTime_; }
+        CHECKTIMESTAMPTYPE *startedSystemTimeStamp() { return startedStatusTime_; }
 
-        CHECKTIMESTAMPTYPE *progressSystemTimeStamp() {return progressStatusTime_; }
+        CHECKTIMESTAMPTYPE *progressSystemTimeStamp() { return progressStatusTime_; }
 
-        CHECKTIMESTAMPTYPE *suspendedSystemTimeStamp() {return suspendedStatusTime_; }
+        CHECKTIMESTAMPTYPE *suspendedSystemTimeStamp() { return suspendedStatusTime_; }
 
-        CHECKTIMESTAMPTYPE *stoppedSystemTimeStamp() {return stoppedStatusTime_; }
+        CHECKTIMESTAMPTYPE *stoppedSystemTimeStamp() { return stoppedStatusTime_; }
 
-        CHECKTIMESTAMPTYPE *cleanupSystemTimeStamp() {return cleanupStatusTime_; }
+        CHECKTIMESTAMPTYPE *cleanupSystemTimeStamp() { return cleanupStatusTime_; }
 
         double timeDiffInMilliSeconds(CHECKTIMESTAMPTYPE latertime, CHECKTIMESTAMPTYPE earliertime);
 

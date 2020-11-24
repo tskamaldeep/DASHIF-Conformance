@@ -9,22 +9,21 @@
 #include <chrono>
 #include <ctime>
 #include <thread>
+#include <map>
 #include "ConformanceConstraints.h"
 
 namespace conformance::constraints {
 
-
 #define INVALID_CHECK_TIME -1
-#define CONSTRAINT_TYPE conformance::constraints::ConstraintTypes
 
+    using namespace std;
     class ConformanceTimerVariables {
     private:
         std::size_t mpd_download_duration_; // Just the cumulative time. No timing/performance stats for downloads.
         std::size_t mpd_parse_duration_; // Parse the manifest and populate the object structure.
         std::size_t total_constraint_check_duration_;
         std::size_t conformance_session_duration_;
-        std::map<CONSTRAINT_TYPE, std::size_t> *constraintTimesMap_ =
-                new std::map<CONSTRAINT_TYPE, std::size_t>();
+        std::map<ConstraintTypes, std::size_t> *constraintTimesMap_ = new std::map<ConstraintTypes, std::size_t>();
 
     public:
         ConformanceTimerVariables(std::size_t downloadtime, std::size_t parsetime) :
@@ -32,9 +31,9 @@ namespace conformance::constraints {
            conformance_session_duration_ = downloadtime + parsetime + total_constraint_check_duration_;
         };
 
-        std::size_t timeForConstraintCheckType(CONSTRAINT_TYPE);
+        std::size_t timeForConstraintCheckType(ConstraintTypes);
 
-        void setTimeForConstraintCheckType(CONSTRAINT_TYPE, std::size_t);
+        void setTimeForConstraintCheckType(ConstraintTypes, std::size_t);
     };
 
     class ConformanceTestTimer {

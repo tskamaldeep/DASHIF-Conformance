@@ -79,7 +79,7 @@ namespace conformance::constraints {
     const std::string MAX_IOP_SEGMENT_DURATION = "10";
 
 
-    enum ConstraintTypes : std::int16_t {
+    enum ConstraintTypes : std::size_t {
         ContentGenerationConstraints = 0,
         MPDTimelineConstraints,
         StaticMPDConstraints,

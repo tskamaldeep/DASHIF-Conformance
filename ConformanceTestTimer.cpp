@@ -7,7 +7,7 @@
 using namespace std;
 using namespace conformance::constraints;
 
-std::size_t ConformanceTimerVariables::timeForConstraintCheckType(CONSTRAINT_TYPE constraintType) {
+std::size_t ConformanceTimerVariables::timeForConstraintCheckType(ConstraintTypes constraintType) {
 
     if (constraintType > conformance::constraints::ConstraintTypes::AkamaiCDNTokenConstraints ||
     constraintType < conformance::constraints::ConstraintTypes::ContentGenerationConstraints) {
@@ -25,7 +25,7 @@ std::size_t ConformanceTimerVariables::timeForConstraintCheckType(CONSTRAINT_TYP
     return checkTime;
 }
 
-void ConformanceTimerVariables::setTimeForConstraintCheckType(CONSTRAINT_TYPE ctype, std::size_t checktime) {
+void ConformanceTimerVariables::setTimeForConstraintCheckType(ConstraintTypes ctype, std::size_t checktime) {
     try {
          std::size_t currentchecktime = constraintTimesMap_->at(ctype);
          std::size_t currenttotaltime = total_constraint_check_duration_;

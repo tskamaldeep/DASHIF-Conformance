@@ -15,7 +15,6 @@ bool ConformanceMPDCheckSequence::checkURLValidity() {
     // Check the extension.
     // Check the prefix
     bool result = false;
-
     try {
         switch (this->MPDURLSchemeType()) {
             case conformance::download::MPDURLSCHEMETYPE::HTTP_PREFIX:
@@ -80,7 +79,7 @@ bool ConformanceMPDCheckSequence::manifestTypeCheck() {
 
     bool status = true;
 
-    std::array<int16_t, 2>::iterator *mpdtypecheckIter = new std::array<int16_t, 2>::iterator();
+    std::array<size_t, 2>::iterator *mpdtypecheckIter = new std::array<size_t, 2>::iterator();
     for (*mpdtypecheckIter = MPDResponseConstraints_->begin();
          *mpdtypecheckIter != MPDResponseConstraints_->end(); mpdtypecheckIter++) {
         constraints::ConformanceConstraint *typeConstraint = reinterpret_cast<constraints::ConformanceConstraint *>(*mpdtypecheckIter);
