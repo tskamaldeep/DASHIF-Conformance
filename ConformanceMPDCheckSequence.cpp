@@ -210,7 +210,7 @@ void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_
         // checkmtx_.try_lock();
 
         CHECKTIMESTAMPTYPE curtime = this->currentSystemTime();
-        std::int16_t curstatus = this->checkStatus();
+        std::int16_t prevstatus = this->checkStatus();
         processTime_ = this->timeDiffInSeconds(curtime, initStatusTime_);
 
         switch (status) {
@@ -220,19 +220,25 @@ void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_
             case (MPDCHECK_THREADSTATUS::SUSPENDED_STATUS):
             case (MPDCHECK_THREADSTATUS::STOPPED_STATUS):
             case (MPDCHECK_THREADSTATUS::CLEANUP_STATUS): {
-                cerr << "Current constraint check was an error after " << processTime_
-                     << " seconds from INIT state." << endl;
-                cerr << "Current Status: " << status << endl;
-                cerr << "Previous known status: " << curstatus << endl;
+                if (CDEBUG) {
+                    cerr << "Current constraint check was an error after " << processTime_
+                         << " seconds from INIT state." << endl;
+                    cerr << "Current Status: " << status << endl;
+                    cerr << "Previous known status: " << prevstatus << endl;
+                }
                 break;
             }
             default: {
-                cerr << "Unidentified current status for the result check routine." << endl;
+                if (CDEBUG) {
+                    cerr << "Unidentified current status for the result check routine." << endl;
+                    cerr << "Current Status: " << status << endl;
+                    cerr << "Previously known Status: " << prevstatus << endl;
+                }
                 break;
             }
         }
 
-        if (bool(status) != curstatus) {
+        if (bool(status) != prevstatus) {
             this->changeCheckStatus(bool(status));
         }
     }

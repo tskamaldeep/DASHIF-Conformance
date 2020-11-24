@@ -9,6 +9,10 @@
 
 namespace conformance::exception {
 
+#if !defined(CDEBUG)
+#define CDEBUG 1
+#endif
+
     const std::size_t EXCEPTION_STR_CHAR_LIMIT_SHORT = 1024;
     const std::size_t EXCEPTION_STR_CHAR_LIMIT_LONG = 65535;
 
