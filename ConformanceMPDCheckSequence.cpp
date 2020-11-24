@@ -171,9 +171,6 @@ void ConformanceMPDCheckSequence::changeCheckStatus(int16_t status) {
         std::cerr << "Invalid status updation:\n " << "Current Status: " << endl;
         return;
     }
-    ///////////////////////////////
-    // TODO:
-    ///////////////////////////////
 
     try {
         checkStatus_ = std::move(status);
@@ -251,25 +248,11 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdur
                 break;
             }
 
-            case MPDCheckSequence::AvailabilityCheck: {
-//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkMPDAvailability);
-                break;
-            }
-
-            case MPDCheckSequence::RedirectResponseCheck: {
-//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::redirectResponseCheck);
-                break;
-            }
-
             case MPDCheckSequence::ManifestTypeCheck: {
                 break;
             }
 
-            case MPDCheckSequence::RefreshIntervalCheck: {
-                break;
-            }
-
-            case MPDCheckSequence::TimestampValidityCheck: {
+            case MPDCheckSequence::AdaptationSetCheck: {
                 break;
             }
 
@@ -290,6 +273,24 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdur
             }
 
             case MPDCheckSequence::VersionsCheck: {
+                break;
+            }
+
+            case MPDCheckSequence::AvailabilityCheck: {
+//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkMPDAvailability);
+                break;
+            }
+
+            case MPDCheckSequence::RedirectResponseCheck: {
+//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::redirectResponseCheck);
+                break;
+            }
+
+            case MPDCheckSequence::RefreshIntervalCheck: {
+                break;
+            }
+
+            case MPDCheckSequence::TimestampValidityCheck: {
                 break;
             }
 

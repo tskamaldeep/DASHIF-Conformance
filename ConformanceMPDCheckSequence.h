@@ -23,16 +23,17 @@ namespace conformance::download {
 
     enum MPDCheckSequence : std::int16_t {
         URLValidityCheck = 0,
-        AvailabilityCheck,
-        RedirectResponseCheck,
         ManifestTypeCheck,
-        RefreshIntervalCheck,
-        TimestampValidityCheck,
+        AdaptationSetCheck,
         DRMPresenceCheck,
         SecureStreamCheck,
         KeyServerAvailabilityCheck,
         CodecSupportCheck,
-        VersionsCheck
+        VersionsCheck,
+        AvailabilityCheck,
+        RedirectResponseCheck,
+        RefreshIntervalCheck,
+        TimestampValidityCheck
     };
 
     enum MPDURLSCHEMETYPE : std::int16_t {
