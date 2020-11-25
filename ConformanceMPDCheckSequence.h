@@ -197,6 +197,8 @@ namespace conformance::download {
 
         bool manifestTypeCheck();
 
+        bool adaptationsetCheck();
+
         bool refreshIntervalCheck();
 
         bool timestampValidityCheck();

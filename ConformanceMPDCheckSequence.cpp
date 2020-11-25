@@ -89,6 +89,12 @@ bool ConformanceMPDCheckSequence::manifestTypeCheck() {
     return status;
 }
 
+bool ConformanceMPDCheckSequence::adaptationsetCheck() {
+    // TODO: Add in the check logic.
+    bool result = true;
+    return result;
+}
+
 bool ConformanceMPDCheckSequence::refreshIntervalCheck() {
     // Is the manifest dynamic type?
     // If so, does the refresh interval correspond to acceptable limits.
@@ -229,8 +235,9 @@ void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_
                 break;
             }
             default: {
+                cerr << "Unidentified current status for the result check routine." << endl;
+
                 if (CDEBUG) {
-                    cerr << "Unidentified current status for the result check routine." << endl;
                     cerr << "Current Status: " << status << endl;
                     cerr << "Previously known Status: " << prevstatus << endl;
                 }
@@ -266,6 +273,7 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
 
     // Carry the check functions map.
     CHECKFUNCTIONSMAP *checkfuncs = this->checkFunctions();
+    ConformanceMPDCheckSequence *checksequence = this;
 
     // Create a function table for each of the enumerated checks.
 
@@ -273,7 +281,8 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
          enumIter != MPDCheckSequence::VersionsCheck + 1; enumIter++) {
         switch (enumIter) {
             case MPDCheckSequence::URLValidityCheck: {
-                // std::function<bool()> uvalidityfunc = std::mem_fn(&ConformanceMPDCheckSequence::checkURLValidity);
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->checkURLValidity(); });
+
                 // checkfuncs->try_emplace(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
                 // checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkURLValidity);
                 // checkfuncs->insert_or_assign(enumIter, std::make_pair(enumIter, &ConformanceMPDCheckSequence::checkURLValidity));
@@ -281,48 +290,57 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
             }
 
             case MPDCheckSequence::ManifestTypeCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->manifestTypeCheck(); });
                 break;
             }
 
             case MPDCheckSequence::AdaptationSetCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->adaptationsetCheck(); });
                 break;
             }
 
             case MPDCheckSequence::DRMPresenceCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->drmPresenceCheck(); });
                 break;
             }
 
             case MPDCheckSequence::SecureStreamCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->secureStreamCheck(); });
                 break;
             }
 
             case MPDCheckSequence::KeyServerAvailabilityCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->keyServerAvailabilityCheck(); });
                 break;
             }
 
             case MPDCheckSequence::CodecSupportCheck: {
+                checkfuncs->insert_or_assign(enumIter, [&checksequence]() {return checksequence->codecSupportCheck(); });
                 break;
             }
 
             case MPDCheckSequence::VersionsCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->versionsCheck(); });
                 break;
             }
 
             case MPDCheckSequence::AvailabilityCheck: {
-//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::checkMPDAvailability);
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->checkMPDAvailability(); });
                 break;
             }
 
             case MPDCheckSequence::RedirectResponseCheck: {
-//                checkfuncs->insert_or_assign(enumIter, &ConformanceMPDCheckSequence::redirectResponseCheck);
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->redirectResponseCheck(); });
                 break;
             }
 
             case MPDCheckSequence::RefreshIntervalCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->refreshIntervalCheck(); });
                 break;
             }
 
             case MPDCheckSequence::TimestampValidityCheck: {
+                checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->timestampValidityCheck(); });
                 break;
             }
 
