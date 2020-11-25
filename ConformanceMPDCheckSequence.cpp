@@ -278,7 +278,7 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
     // Create a function table for each of the enumerated checks.
 
     for (int16_t enumIter = MPDCheckSequence::URLValidityCheck;
-         enumIter != MPDCheckSequence::VersionsCheck + 1; enumIter++) {
+         enumIter != MPDCheckSequence::TimestampValidityCheck + 1; enumIter++) {
         switch (enumIter) {
             case MPDCheckSequence::URLValidityCheck: {
                 checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->checkURLValidity(); });
@@ -324,7 +324,7 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
                 break;
             }
 
-            case MPDCheckSequence::AvailabilityCheck: {
+            case MPDCheckSequence::MPDAvailabilityCheck: {
                 checkfuncs->insert_or_assign(std::int16_t(enumIter), [&checksequence]() {return checksequence->checkMPDAvailability(); });
                 break;
             }
@@ -348,6 +348,12 @@ ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
                 break;
         }
     }
+
+    // Set the check status of the current instance to INIT.
+    this->changeCheckStatus(MPDCHECK_THREADSTATUS::INIT_STATUS);
+
+    // Set the timestamp of check inside the constructor.
+    initStatusTime_ = this->currentSystemTime();
 }
 
 // TODO: Initiate the conformance check by thread-ID.

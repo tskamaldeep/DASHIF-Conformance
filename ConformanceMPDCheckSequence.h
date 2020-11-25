@@ -30,7 +30,7 @@ namespace conformance::download {
         KeyServerAvailabilityCheck,
         CodecSupportCheck,
         VersionsCheck,
-        AvailabilityCheck,
+        MPDAvailabilityCheck,
         RedirectResponseCheck,
         RefreshIntervalCheck,
         TimestampValidityCheck
@@ -79,7 +79,7 @@ namespace conformance::download {
         int16_t checkStatus_ = MPDCHECK_THREADSTATUS::INIT_STATUS;
 
         // Initialize the times.
-        CHECKTIMESTAMPTYPE initStatusTime_ = currentSystemTime();
+        CHECKTIMESTAMPTYPE initStatusTime_;
         double processTime_ = 0;
 
         // Set to the uninitialized time instance. Then set when the mentioned phase begins.
