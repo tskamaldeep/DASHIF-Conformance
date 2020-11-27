@@ -5,17 +5,15 @@
 #ifndef DASHIF_CONFORMANCE_CONFORMANCEMPDPARSER_H
 #define DASHIF_CONFORMANCE_CONFORMANCEMPDPARSER_H
 
-//#include "external-includes/xercesc/dom/DOM.hpp"
-//#include "external-includes/xercesc/util/PlatformUtils.hpp"
+#include <libxml++/libxml++.h>
 
-//namespace conformance::parser {
-//
-//using namespace xeresc;
-//
-//class ConformanceMPDParser {
+namespace conformance::parser {
+
+    class ConformanceMPDParser {
 //
 //
-//};
+    };
 //
-//}
+}
+
 #endif //DASHIF_CONFORMANCE_CONFORMANCEMPDPARSER_H

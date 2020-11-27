@@ -3,3 +3,5 @@
 //
 
 #include "ConformanceMPDParser.h"
+
+using namespace conformance::parser;
