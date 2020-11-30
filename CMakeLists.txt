@@ -9,7 +9,7 @@ link_directories(/usr/local/Cellar/libxml++3/3.2.2/lib)
 link_directories(/usr/local/Cellar/glibmm/2.64.4/lib)
 
 #add_library(DASHIF_Conformance SHARED library.cpp library.h ConformanceErrorLevels.cpp ConformanceErrorLevels.h ConformanceException.cpp ConformanceException.h ConformanceExceptionTypes.h ConformanceConstraints.cpp ConformanceConstraints.h ConformanceTestTimer.cpp ConformanceTestTimer.h ConformanceMPDCheckSequence.cpp ConformanceMPDCheckSequence.h ConformanceMPDParser.cpp ConformanceMPDParser.h tests/testConformanceException.cpp tests/testConformanceException.h tests/catchinit.cpp external-includes/ tests/addTimestampDetails.cpp)
-add_library(DASHIF_Conformance STATIC library.cpp library.h ConformanceExceptionTypes.h ConformanceErrorLevels.h ConformanceErrorLevels.cpp ConformanceException.cpp ConformanceException.h ConformanceConstraints.cpp ConformanceConstraints.h ConformanceTestTimer.cpp ConformanceTestTimer.h ConformanceMPDCheckSequence.cpp ConformanceMPDCheckSequence.h ConformanceMPDParser.cpp ConformanceMPDParser.h)
+add_library(DASHIF_Conformance STATIC library.cpp library.h ConformanceExceptionTypes.h ConformanceErrorLevels.h ConformanceErrorLevels.cpp ConformanceException.cpp ConformanceException.h ConformanceConstraints.cpp ConformanceConstraints.h ConformanceTestTimer.cpp ConformanceTestTimer.h ConformanceMPDCheckSequence.cpp ConformanceMPDCheckSequence.h ConformanceMPDParser.cpp ConformanceMPDParser.h ConformanceMPDDataModel.cpp ConformanceMPDDataModel.h)
 
 # Add the shared dependency library
 # target_link_libraries(libDASHIF_Conformance.a SHARED libxml++-3.0.dylib)

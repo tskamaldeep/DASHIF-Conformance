@@ -46,6 +46,15 @@ namespace conformance::parser {
 
     const std::size_t AUDIO_SAMPLE_RATE_44_1 = 44100;
     const std::size_t AUDIO_SAMPLE_RATE_48 = 48000;
+    const std::list<const std::size_t> AUDIO_SAMPLE_RATES = {AUDIO_SAMPLE_RATE_44_1, AUDIO_SAMPLE_RATE_48};
+
+    const std::size_t MAX_POSSIBLE_WIDTH_UHD = 3840;
+    const std::size_t MAX_POSSIBLE_WIDTH_DCI = 4096;
+    const std::size_t MAX_POSSIBLE_HEIGHT = 2160;
+
+    // Assuming max frame rate of 30 for now.
+    const float MAX_FRAME_RATE = 30.000000;
+    const std::string DEFAULT_SAR = "1:1";
 
     enum AdaptationSets : std::size_t {
         ADAPTATION_SET_VIDEO_TYPE = 0,
@@ -61,7 +70,7 @@ namespace conformance::parser {
         std::size_t repwidth_ = -1;
         std::size_t repheight_ = -1;
         std::size_t repaudiosamplerate_ = -1;
-        std::size_t repframerate_ = -1;
+        float repframerate_ = -1;
         std::string repsar_ = std::string("");
         std::size_t repbandwidth_ = -1;
         bool repstartWithSAP_ = true;
@@ -90,16 +99,64 @@ namespace conformance::parser {
             codecs_ = std::move(codecs);
         }
 
-        // Set the rest of the attributes.
-//        void setMimeTypeForRepresentation(std::string mimetype) {
-//            if (mimetype != VIDEO_MIME_TYPE && mimetype != AUDIO_MIME_TYPE && mimetype != TEXT_MIME_TYPE) {
-//                std::cerr << "Invalid mimeType provided with representation ID: " << repid_ << std::endl;
-//                std::cerr << "mimetype setting failed." << std::endl;
-//                return;
-//            }
-//
-//            mimetype_ = std::move(mimetype);
-//        }
+        void setWidthForRepresentation(std::size_t repwidth) {
+            if (repwidth < 0 || repwidth > MAX_POSSIBLE_WIDTH_UHD) {
+                std::cerr << "Invalid representation width provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Representation width setting failed." << std::endl;
+                return;
+            }
+
+            repwidth_ = std::move(repwidth);
+        }
+
+        void setHeightForRepresentation(std::size_t repheight) {
+            if (repheight < 0 || repheight > MAX_POSSIBLE_HEIGHT) {
+                std::cerr << "Invalid representation height provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Representation height setting failed." << std::endl;
+                return;
+            }
+
+            repheight_ = std::move(repheight);
+        }
+
+        void setAudioSampleRateForRepresentation(std::size_t asrate) {
+            if (std::find(AUDIO_SAMPLE_RATES.begin(), AUDIO_SAMPLE_RATES.end(), asrate) == AUDIO_SAMPLE_RATES.end()) {
+                std::cerr << "Invalid representation audio sample rate provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Representation audio sample rate failed." << std::endl;
+                return;
+            }
+
+            repaudiosamplerate_ = std::move(asrate);
+        }
+
+        void setVideoFrameRateForRepresentation(float repframerate) {
+            if (repframerate < 0 || repframerate > MAX_FRAME_RATE) {
+                std::cerr << "Invalid representation video frame rate provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Representation video frame rate failed." << std::endl;
+                return;
+            }
+
+            repframerate_ = std::move(repframerate);
+        }
+
+        void setSARForRepresentation(const std::string repsar) {
+            // TODO: Refine check. Only "1:1" allowed for now.
+            if (!repsar.compare(DEFAULT_SAR)) {
+                std::cerr << "Invalid representation SAR provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Representation SAR failed." << std::endl;
+                return;
+            }
+
+            repsar_ = std::move(repsar);
+        }
+
+        void setStartWithSAPForRepresentation(bool startwithSAP) {
+            repstartWithSAP_ = std::move(startwithSAP);
+        }
+
+        void setBandwidthForRepresentation(std::size_t bandwidth) {
+            repbandwidth_ = std::move(bandwidth);
+        }
 
         ~ConformanceMPDRepresentation() = default;
 
