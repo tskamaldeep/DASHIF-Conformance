@@ -250,6 +250,33 @@ ConformanceMPDCheckSequence.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDCheckSequence.cpp.s
 .PHONY : ConformanceMPDCheckSequence.cpp.s
 
+ConformanceMPDDataModel.o: ConformanceMPDDataModel.cpp.o
+
+.PHONY : ConformanceMPDDataModel.o
+
+# target to build an object file
+ConformanceMPDDataModel.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDDataModel.cpp.o
+.PHONY : ConformanceMPDDataModel.cpp.o
+
+ConformanceMPDDataModel.i: ConformanceMPDDataModel.cpp.i
+
+.PHONY : ConformanceMPDDataModel.i
+
+# target to preprocess a source file
+ConformanceMPDDataModel.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDDataModel.cpp.i
+.PHONY : ConformanceMPDDataModel.cpp.i
+
+ConformanceMPDDataModel.s: ConformanceMPDDataModel.cpp.s
+
+.PHONY : ConformanceMPDDataModel.s
+
+# target to generate assembly for a file
+ConformanceMPDDataModel.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/ConformanceMPDDataModel.cpp.s
+.PHONY : ConformanceMPDDataModel.cpp.s
+
 ConformanceMPDParser.o: ConformanceMPDParser.cpp.o
 
 .PHONY : ConformanceMPDParser.o
@@ -352,6 +379,9 @@ help:
 	@echo "... ConformanceMPDCheckSequence.o"
 	@echo "... ConformanceMPDCheckSequence.i"
 	@echo "... ConformanceMPDCheckSequence.s"
+	@echo "... ConformanceMPDDataModel.o"
+	@echo "... ConformanceMPDDataModel.i"
+	@echo "... ConformanceMPDDataModel.s"
 	@echo "... ConformanceMPDParser.o"
 	@echo "... ConformanceMPDParser.i"
 	@echo "... ConformanceMPDParser.s"
