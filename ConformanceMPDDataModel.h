@@ -56,6 +56,9 @@ namespace conformance::parser {
     const float MAX_FRAME_RATE = 30.000000;
     const std::string DEFAULT_SAR = "1:1";
 
+    const std::string PAR_16_9 = "16:9";
+    const std::string PAR_4_3 = "4:3";
+
     enum AdaptationSets : std::size_t {
         ADAPTATION_SET_VIDEO_TYPE = 0,
         ADAPTATION_SET_AUDIO_TYPE,
@@ -166,16 +169,28 @@ namespace conformance::parser {
     private:
         const std::string adID_;
         bool segaligned_;
+        std::size_t numrepresentations_;
         std::size_t maxwidth_ = -1;
         std::size_t maxheight_ = -1;
         std::size_t maxframerate_ = -1;
         std::string par_ = "16:9";
+        std::list<ConformanceMPDRepresentation&> *representations_ = {};
 
     public:
-        ConformanceMPDAdaptationSet(std::size_t pID, bool segaligned) {
-            segaligned_ = segaligned;
-//            adID_ = pID + "_" +
+        ConformanceMPDAdaptationSet(const std::string adID) : adID_(adID) {}
+
+        void setPARForAdaptationSet(const std::string adpar) {
+            // TODO: Refine check. Only "16:9" or "4:3" allowed for now.
+            if (!adpar.compare(PAR_16_9) || !adpar.compare(PAR_4_3)) {
+                std::cerr << "Invalid pixel aspect ratio provided with representation ID: " << adID_ << std::endl;
+                std::cerr << "Adaptation set PAR test failed." << std::endl;
+                return;
+            }
+
+            par_ = std::move(adpar);
         }
+
+        ~ConformanceMPDAdaptationSet() = default;
     };
 
     class ConformanceMPDPeriod {
