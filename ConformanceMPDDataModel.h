@@ -65,6 +65,13 @@ namespace conformance::parser {
         ADAPTATION_SET_TEXT_TYPE
     };
 
+    enum AdaptationSetContentType : std::size_t {
+        CONTENT_TYPE_VIDEO = 0,
+        CONTENT_TYPE_IMAGE,
+        CONTENT_TYPE_AUDIO,
+        CONTENT_TYPE_TEXT
+    };
+
     class ConformanceMPDRepresentation {
     private:
         const std::string repid_;
@@ -172,23 +179,29 @@ namespace conformance::parser {
         std::size_t numrepresentations_;
         std::size_t maxwidth_ = -1;
         std::size_t maxheight_ = -1;
+        std::size_t minwidth_ = -1;
+        std::size_t minheight_ = -1;
+        std::size_t adwidth_ = -1;
+        std::size_t adheight_ = -1;
+
         std::size_t maxframerate_ = -1;
+        std::size_t framerate_ = -1;
+
         std::string par_ = "16:9";
+        // Look into validating via ISO 639-2 type.
+        std::string langstr_ = "eng";
+        std::size_t contentType_ = AdaptationSetContentType::CONTENT_TYPE_VIDEO;
+        bool bitstreamswitching_ = NULL;
         std::list<ConformanceMPDRepresentation&> *representations_ = {};
 
     public:
         ConformanceMPDAdaptationSet(const std::string adID) : adID_(adID) {}
-
-        void setPARForAdaptationSet(const std::string adpar) {
-            // TODO: Refine check. Only "16:9" or "4:3" allowed for now.
-            if (!adpar.compare(PAR_16_9) || !adpar.compare(PAR_4_3)) {
-                std::cerr << "Invalid pixel aspect ratio provided with representation ID: " << adID_ << std::endl;
-                std::cerr << "Adaptation set PAR test failed." << std::endl;
-                return;
-            }
-
-            par_ = std::move(adpar);
-        }
+        void setPARForAdaptationSet(const std::string adpar);
+        void setContentTypeForAdaptationSet(std::size_t ctype);
+        void setBitstreamSwitchingForAdaptationSet(bool bsswitching);
+        void setWidthForAdaptationSet(std::size_t widthval, bool max=false, bool min=false);
+        void setHeightForAdaptationSet(std::size_t heightval, bool max=false, bool min=false);
+        void setFrameRateForAdaptationSet(std::size_t frate, bool max=false);
 
         ~ConformanceMPDAdaptationSet() = default;
     };
