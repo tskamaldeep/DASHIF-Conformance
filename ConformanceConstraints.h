@@ -68,6 +68,7 @@ namespace conformance::constraints {
     // Audio properties: channel config
     const std::string MPD_AUDIO_CHANNEL_CONFIG_ROLE_SCHEME = "urn:mpeg:dash:23003:3:audio_channel_configuration:2011";
     const std::string MPD_AUDIO_CHANNEL_CICP_ROLE_SCHEME = "urn:mpeg:mpegB:cicp:ChannelConfiguration";
+    const std::string MPD_AUDIO_RECEIVER_ROLE_SCHEME = "urn:mpeg:dash:audio-receiver-mix:2014";
     const std::string DOLBY_AC3_AUDIO_ROLE_SCHEME = "tag:dolby.com,2014:dash:audio_channel_configuration:2011";
 
     // Max version limit for constraint version.

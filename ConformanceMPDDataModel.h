@@ -191,7 +191,7 @@ namespace conformance::parser {
         // Look into validating via ISO 639-2 type.
         std::string langstr_ = "eng";
         std::size_t contentType_ = AdaptationSetContentType::CONTENT_TYPE_VIDEO;
-        bool bitstreamswitching_ = NULL;
+        bool bitstreamswitching_ = true;
         std::list<ConformanceMPDRepresentation&> *representations_ = {};
 
     public:
@@ -202,6 +202,9 @@ namespace conformance::parser {
         void setWidthForAdaptationSet(std::size_t widthval, bool max=false, bool min=false);
         void setHeightForAdaptationSet(std::size_t heightval, bool max=false, bool min=false);
         void setFrameRateForAdaptationSet(std::size_t frate, bool max=false);
+
+        // Consider ISO-639-2 validation. What langs are not supported by deployed decoders?
+        void setLangAttributeForAdaptationSet(std::string langstr) { langstr_ = std::move(langstr); }
 
         ~ConformanceMPDAdaptationSet() = default;
     };

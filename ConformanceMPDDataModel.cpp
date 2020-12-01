@@ -39,7 +39,7 @@ void ConformanceMPDAdaptationSet::setBitstreamSwitchingForAdaptationSet(bool bss
     bitstreamswitching_ = std::move(bsswitching);
 }
 
-void ConformanceMPDAdaptationSet::setWidthForAdaptationSet(std::size_t widthval, bool max=false, bool min=false) {
+void ConformanceMPDAdaptationSet::setWidthForAdaptationSet(std::size_t widthval, bool max, bool min) {
     if (max and !min) {
         maxwidth_ = std::move (widthval);
     }
@@ -56,7 +56,7 @@ void ConformanceMPDAdaptationSet::setWidthForAdaptationSet(std::size_t widthval,
     }
 }
 
-void ConformanceMPDAdaptationSet::setHeightForAdaptationSet(std::size_t heightval, bool max=false, bool min=false) {
+void ConformanceMPDAdaptationSet::setHeightForAdaptationSet(std::size_t heightval, bool max, bool min) {
     if (max and !min) {
         maxheight_ = std::move (heightval);
     }
@@ -73,7 +73,7 @@ void ConformanceMPDAdaptationSet::setHeightForAdaptationSet(std::size_t heightva
     }
 }
 
-void ConformanceMPDAdaptationSet::setFrameRateForAdaptationSet(std::size_t frate, bool max=false) {
+void ConformanceMPDAdaptationSet::setFrameRateForAdaptationSet(std::size_t frate, bool max) {
     if (max) {
         maxframerate_ = std::move (frate);
     }
