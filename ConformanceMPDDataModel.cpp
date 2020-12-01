@@ -86,3 +86,23 @@ void ConformanceMPDAdaptationSet::setFrameRateForAdaptationSet(std::size_t frate
         return;
     }
 }
+
+std::size_t ConformanceMPDAdaptationSet::addRepresentationToAdaptationSet(ConformanceMPDRepresentation &rep) {
+    std::list<ConformanceMPDRepresentation> reps = this->representations();
+    std::list<ConformanceMPDRepresentation>::iterator repIter;
+
+    for (repIter=reps.begin(); repIter!=reps.end(); ++repIter) {
+        if (!repIter->repID().compare(rep.repID())) {
+            // Representation is already added to the adaptation set.
+            std::cerr << "Given representation " << std::string(rep.repID()) << " already added to the adaptation set "
+                      << adID_ << std::endl;
+            return numrepresentations_;
+        }
+    }
+
+    representations_.push_back(rep);
+    numrepresentations_+=1;
+
+    // Return number of reps or the ID of the added rep.
+    return numrepresentations_;
+}

@@ -88,6 +88,8 @@ namespace conformance::parser {
     public:
         ConformanceMPDRepresentation(const std::string repid) : repid_(repid) {}
 
+        const std::string repID() {return repid_; }
+
         void setMimeTypeForRepresentation(std::string mimetype) {
             if (mimetype != VIDEO_MIME_TYPE && mimetype != AUDIO_MIME_TYPE && mimetype != TEXT_MIME_TYPE) {
                 std::cerr << "Invalid mimeType provided with representation ID: " << repid_ << std::endl;
@@ -176,7 +178,7 @@ namespace conformance::parser {
     private:
         const std::string adID_;
         bool segaligned_;
-        std::size_t numrepresentations_;
+        std::size_t numrepresentations_ = 0;
         std::size_t maxwidth_ = -1;
         std::size_t maxheight_ = -1;
         std::size_t minwidth_ = -1;
@@ -192,16 +194,20 @@ namespace conformance::parser {
         std::string langstr_ = "eng";
         std::size_t contentType_ = AdaptationSetContentType::CONTENT_TYPE_VIDEO;
         bool bitstreamswitching_ = true;
-        std::list<ConformanceMPDRepresentation&> *representations_ = {};
+        std::list<ConformanceMPDRepresentation> representations_ = {};
 
     public:
         ConformanceMPDAdaptationSet(const std::string adID) : adID_(adID) {}
+        std::list<ConformanceMPDRepresentation> representations () {return representations_; }
+
         void setPARForAdaptationSet(const std::string adpar);
         void setContentTypeForAdaptationSet(std::size_t ctype);
         void setBitstreamSwitchingForAdaptationSet(bool bsswitching);
         void setWidthForAdaptationSet(std::size_t widthval, bool max=false, bool min=false);
         void setHeightForAdaptationSet(std::size_t heightval, bool max=false, bool min=false);
         void setFrameRateForAdaptationSet(std::size_t frate, bool max=false);
+
+        std::size_t addRepresentationToAdaptationSet(ConformanceMPDRepresentation &rep);
 
         // Consider ISO-639-2 validation. What langs are not supported by deployed decoders?
         void setLangAttributeForAdaptationSet(std::string langstr) { langstr_ = std::move(langstr); }
