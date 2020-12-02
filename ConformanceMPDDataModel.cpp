@@ -19,7 +19,7 @@ ConformanceMPDSegmentTemplate::ConformanceMPDSegmentTemplate(std::size_t startnu
     std::string ext_substr = initialization.substr(initialization.size() - 4);
     std::string ext_substr2 = mediaStr.substr(mediaStr.size() - 4);
 
-    if (!ext_substr.compare(".mp4") or !ext_substr2.compare(".mp4")) {
+    if ((!ext_substr.compare(".mp4")) || (!ext_substr2.compare(".mp4")) || (!ext_substr2.compare(".m4s"))) {
         std::cerr << "Unknown initialization string present in the segment template object.\n" << "Found: "
                   << ext_substr << std::endl;
     }
