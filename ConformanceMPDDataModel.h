@@ -76,6 +76,20 @@ namespace conformance::parser {
     };
 
     class ConformanceMPDSegmentTemplate {
+    private:
+        std::size_t timescale_;
+        std::size_t pts_;
+        std::size_t duration_;
+        std::string mediastr_;
+        std::string initializationStr_;
+        std::size_t startNum_;
+
+    public:
+        ConformanceMPDSegmentTemplate(std::size_t startnum, std::string initialization,
+                                      std::size_t dur, std::string mediaStr, std::size_t timescale,
+                                      std::size_t pts);
+
+        ~ConformanceMPDSegmentTemplate() = default;
 
     };
 

@@ -6,6 +6,25 @@
 
 using namespace conformance::parser;
 
+ConformanceMPDSegmentTemplate::ConformanceMPDSegmentTemplate(std::size_t startnum, std::string initialization,
+                                                             std::size_t dur, std::string mediaStr,
+                                                             std::size_t timescale,
+                                                             std::size_t pts) :
+        startNum_(startnum), initializationStr_(initialization),
+        duration_(dur), mediastr_(mediaStr), timescale_(timescale), pts_(pts) {
+
+    // Check the extension of mediastr and initialization of the segment template.
+    // Supported extensions table available for the version in force?
+
+    std::string ext_substr = initialization.substr(initialization.size() - 4);
+    std::string ext_substr2 = mediaStr.substr(mediaStr.size() - 4);
+
+    if (!ext_substr.compare(".mp4") or !ext_substr2.compare(".mp4")) {
+        std::cerr << "Unknown initialization string present in the segment template object.\n" << "Found: "
+                  << ext_substr << std::endl;
+    }
+}
+
 void ConformanceMPDAdaptationSet::setPARForAdaptationSet(const std::string adpar) {
     // TODO: Refine check. Only "16:9" or "4:3" allowed for now.
     if (!adpar.compare(PAR_16_9) || !adpar.compare(PAR_4_3)) {
