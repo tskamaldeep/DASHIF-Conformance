@@ -97,10 +97,11 @@ namespace conformance::download {
 
         };
 
-        std::array<std::size_t, 3> *AdaptationSetConstraints = new std::array<std::size_t, 3> {
+        std::array<std::size_t, 4> *AdaptationSetConstraints = new std::array<std::size_t, 4> {
                 ConstraintTypes::VideoAdaptationSetConstraints,
                 ConstraintTypes::AudioAdaptationSetConstraints,
-                ConstraintTypes::TextAdaptationSetConstraints
+                ConstraintTypes::TextAdaptationSetConstraints,
+                ConstraintTypes::SegmentTemplateConstraints
         };
 
         std::array<std::size_t, 4> *MPDResponseConstraints_ = new std::array<std::size_t, 4> {

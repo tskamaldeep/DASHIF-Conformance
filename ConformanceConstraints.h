@@ -85,6 +85,7 @@ namespace conformance::constraints {
         MPDTimelineConstraints,
         StaticMPDConstraints,
         DynamicMPDConstraints,
+        SegmentTemplateConstraints,
         CMediaSegmentConstraints,
         VideoAdaptationSetConstraints,
         AudioAdaptationSetConstraints,

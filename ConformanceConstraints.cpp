@@ -77,6 +77,33 @@ ConformanceConstraint::ConformanceConstraint(ConstraintTypes cttype) : cttype_(c
             break;
         }
 
+        case ConstraintTypes::SegmentTemplateConstraints: {
+            ConstraintEntity segmedia = ConstraintEntity("media", "SegmentTemplate@media", "The template for a media segment assigned "
+                                                                                           "to a representation", std::string(typeid(std::string).name()));
+
+            ConstraintEntity segstartnum = ConstraintEntity("startnumber", "SegmentTemplate@startNumber", "Number of the first segment assigned to a representation",
+                                                            std::string(typeid(std::size_t).name()));
+
+            ConstraintEntity segtimescale = ConstraintEntity("timescale", "SegmentTemplate@timeScale",
+                                                             "time scale of the representation", std::string(typeid(std::string).name()));
+
+            ConstraintEntity segduration = ConstraintEntity("segduration", "SegmentTemplate@duration", "Duration of each segment in units of time",
+                                                            std::string(typeid(std::size_t).name()));
+
+            // What is the data type of a segment timeline?
+            ConstraintEntity segTimeline = ConstraintEntity("segTimeline", "SegmentTemplate@SegmentTimeline",
+                                                            "Indicator of a segment timeline", std::string(typeid(std::string).name()));
+
+
+            allConstraints_->push_back(&segmedia);
+            allConstraints_->push_back(&segstartnum);
+            allConstraints_->push_back(&segtimescale);
+            allConstraints_->push_back(&segduration);
+            allConstraints_->push_back(&segTimeline);
+            break;
+
+        }
+
         case ConstraintTypes::CMediaSegmentConstraints:
             // Define the constraint around segment formats.
             // Comply with ISO/IEC 23009-1, section 7.3
