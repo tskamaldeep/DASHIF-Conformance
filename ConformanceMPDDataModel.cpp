@@ -41,15 +41,12 @@ void ConformanceMPDAdaptationSet::setBitstreamSwitchingForAdaptationSet(bool bss
 
 void ConformanceMPDAdaptationSet::setWidthForAdaptationSet(std::size_t widthval, bool max, bool min) {
     if (max and !min) {
-        maxwidth_ = std::move (widthval);
-    }
-    else if (!max and min) {
-        minwidth_ = std::move (widthval);
-    }
-    else if (!max and !min) {
-        adwidth_ = std::move (widthval);
-    }
-    else {
+        maxwidth_ = std::move(widthval);
+    } else if (!max and min) {
+        minwidth_ = std::move(widthval);
+    } else if (!max and !min) {
+        adwidth_ = std::move(widthval);
+    } else {
         std::cerr << "Invalid width parameter provided with adaptation set ID: " << adID_ << std::endl;
         std::cerr << "Adaptation set width setting failed." << std::endl;
         return;
@@ -58,15 +55,12 @@ void ConformanceMPDAdaptationSet::setWidthForAdaptationSet(std::size_t widthval,
 
 void ConformanceMPDAdaptationSet::setHeightForAdaptationSet(std::size_t heightval, bool max, bool min) {
     if (max and !min) {
-        maxheight_ = std::move (heightval);
-    }
-    else if (!max and min) {
-        minheight_ = std::move (heightval);
-    }
-    else if (!max and !min) {
-        adheight_ = std::move (heightval);
-    }
-    else {
+        maxheight_ = std::move(heightval);
+    } else if (!max and min) {
+        minheight_ = std::move(heightval);
+    } else if (!max and !min) {
+        adheight_ = std::move(heightval);
+    } else {
         std::cerr << "Invalid height parameter provided with adaptation set ID: " << adID_ << std::endl;
         std::cerr << "Adaptation set height setting failed." << std::endl;
         return;
@@ -75,23 +69,42 @@ void ConformanceMPDAdaptationSet::setHeightForAdaptationSet(std::size_t heightva
 
 void ConformanceMPDAdaptationSet::setFrameRateForAdaptationSet(std::size_t frate, bool max) {
     if (max) {
-        maxframerate_ = std::move (frate);
-    }
-    else if (!max ) {
-        framerate_ = std::move (frate);
-    }
-    else {
+        maxframerate_ = std::move(frate);
+    } else if (!max) {
+        framerate_ = std::move(frate);
+    } else {
         std::cerr << "Invalid framerate provided with adaptation set ID: " << adID_ << std::endl;
         std::cerr << "Adaptation set framerate setting failed." << std::endl;
         return;
     }
 }
 
+std::size_t ConformanceMPDRepresentation::addSegmentTemplateToRepresentation(ConformanceMPDSegmentTemplate segtmp) {
+    std::list<ConformanceMPDSegmentTemplate> segs = this->segmentTemplates();
+    std::list<ConformanceMPDSegmentTemplate>::iterator segIter;
+    std::int16_t segcount = 0;
+
+    for (segIter = segs.begin(); segIter != segs.end(); ++segIter) {
+        segcount++;
+    }
+
+    if (segcount > numsegmenttemplates_) {
+        std::cerr << "Count mismatch in aggregating segment templates" << std::endl;
+        std::cerr << "Stopping the task of adding a segment template to the representation." << std::endl;
+        return segcount;
+    }
+
+    // Add the collection to the back of the list.
+    segmentTemplates_.push_back(segtmp);
+    numsegmenttemplates_ += 1;
+    return numsegmenttemplates_;
+}
+
 std::size_t ConformanceMPDAdaptationSet::addRepresentationToAdaptationSet(ConformanceMPDRepresentation &rep) {
     std::list<ConformanceMPDRepresentation> reps = this->representations();
     std::list<ConformanceMPDRepresentation>::iterator repIter;
 
-    for (repIter=reps.begin(); repIter!=reps.end(); ++repIter) {
+    for (repIter = reps.begin(); repIter != reps.end(); ++repIter) {
         if (!repIter->repID().compare(rep.repID())) {
             // Representation is already added to the adaptation set.
             std::cerr << "Given representation " << std::string(rep.repID()) << " already added to the adaptation set "
@@ -101,7 +114,7 @@ std::size_t ConformanceMPDAdaptationSet::addRepresentationToAdaptationSet(Confor
     }
 
     representations_.push_back(rep);
-    numrepresentations_+=1;
+    numrepresentations_ += 1;
 
     // Return number of reps or the ID of the added rep.
     return numrepresentations_;

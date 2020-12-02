@@ -27,7 +27,9 @@ namespace conformance::parser {
     // H.264 codec attributes.
     const std::string AVC_HIGH_LEVEL_40_28_CODEC = "avc1.640028";
     const std::string AVC_HIGH_LEVEL_40_30_CODEC = "avc1.640030";
-    const std::string AVC_MAIN_LEVEL_CODEC = "avc1.4D401E";
+    const std::string AVC_MAIN_LEVEL_1_CODEC = "avc1.42C01F";
+    const std::string AVC_MAIN_LEVEL_2_CODEC = "avc1.4D401E";
+    const std::string AVC_MAIN_LEVEL_3_CODEC = "avc1.4D401F";
 
     // HEVC codec attributes.
     const std::string HEVC_MAIN_3_1_LEVEL_CODEC_1 = "hev1.1.2.L93.B0";
@@ -41,7 +43,8 @@ namespace conformance::parser {
     const std::list<const std::string> MP4_VIDEO_CODECS = {
             HEVC_MAIN_3_1_LEVEL_CODEC_1, HEVC_MAIN_4_1_LEVEL_CODEC_1, HEVC_MAIN_10_4_1_LEVEL_CODEC_1,
             HEVC_MAIN_3_1_LEVEL_CODEC_2, HEVC_MAIN_4_1_LEVEL_CODEC_2, HEVC_MAIN_10_4_1_LEVEL_CODEC_2,
-            AVC_HIGH_LEVEL_40_28_CODEC, AVC_HIGH_LEVEL_40_30_CODEC, AVC_MAIN_LEVEL_CODEC
+            AVC_HIGH_LEVEL_40_28_CODEC, AVC_HIGH_LEVEL_40_30_CODEC, AVC_MAIN_LEVEL_1_CODEC, AVC_MAIN_LEVEL_2_CODEC,
+            AVC_MAIN_LEVEL_3_CODEC
     };
 
     const std::size_t AUDIO_SAMPLE_RATE_44_1 = 44100;
@@ -72,6 +75,10 @@ namespace conformance::parser {
         CONTENT_TYPE_TEXT
     };
 
+    class ConformanceMPDSegmentTemplate {
+
+    };
+
     class ConformanceMPDRepresentation {
     private:
         const std::string repid_;
@@ -85,10 +92,15 @@ namespace conformance::parser {
         std::size_t repbandwidth_ = -1;
         bool repstartWithSAP_ = true;
 
+        std::size_t numsegmenttemplates_ = 0;
+        std::list<ConformanceMPDSegmentTemplate> segmentTemplates_ = {};
+
     public:
         ConformanceMPDRepresentation(const std::string repid) : repid_(repid) {}
 
         const std::string repID() {return repid_; }
+
+        std::list<ConformanceMPDSegmentTemplate> segmentTemplates () {return segmentTemplates_; }
 
         void setMimeTypeForRepresentation(std::string mimetype) {
             if (mimetype != VIDEO_MIME_TYPE && mimetype != AUDIO_MIME_TYPE && mimetype != TEXT_MIME_TYPE) {
@@ -169,6 +181,8 @@ namespace conformance::parser {
         void setBandwidthForRepresentation(std::size_t bandwidth) {
             repbandwidth_ = std::move(bandwidth);
         }
+
+        std::size_t addSegmentTemplateToRepresentation(ConformanceMPDSegmentTemplate segtmp);
 
         ~ConformanceMPDRepresentation() = default;
 
