@@ -265,6 +265,11 @@ void ConformanceConstraint::initializeConstraints() {
     ConstraintDefinition *staticTSBAbsenceDefn;
     ConstraintDefinition *minUpdatePeriodDefn;
     ConstraintDefinition *minUpdatePeriodLiveDefn;
+    ConstraintDefinition *segmentTemplateMediaDefn;
+    ConstraintDefinition *segmentTemplateStartNumDefn;
+    ConstraintDefinition *segmentTemplateTimescaleDefn;
+    ConstraintDefinition *segmentTemplateDurationDefn;
+    ConstraintDefinition *segmentTemplateTimelineDefn;
     ConstraintDefinition *videoMimeTypeDefn;
     ConstraintDefinition *audioMimeTypeDefn;
     ConstraintDefinition *subtitleMimeTypeDefn1;
@@ -501,6 +506,56 @@ void ConformanceConstraint::initializeConstraints() {
             minUpdatePeriodLiveDefn->setConstraintOperatorForEntity(
                     conformance::constraints::ConstraintOperator::PRESENT);
             minUpdatePeriodLiveDefn->setExpectedConstraintEntityVal(iterEntity, "0");
+
+        } else if (iterEntity.entityName().compare("segmedia") == 0) {
+            const std::string segmentTemplateMediaDesc = "Segment template media description MUST be PRESENT";
+            segmentTemplateMediaDefn = new ConstraintDefinition("segmentTemplateMediaDefinition",
+                                                                segmentTemplateMediaDesc, iterEntity);
+
+            segmentTemplateMediaDefn->setConstraintEnforcementForDefinition(
+                    conformance::exception::ConformanceEnforcementTypes::MUST);
+            segmentTemplateMediaDefn->setConstraintOperatorForEntity(
+                    conformance::constraints::ConstraintOperator::PRESENT);
+            segmentTemplateMediaDefn->setExpectedConstraintEntityVal(iterEntity, "true");
+
+        } else if (iterEntity.entityName().compare("startnumber") == 0) {
+            const std::string segstartnumDesc = "Start number of a segment MAY be PRESENT";
+            segmentTemplateStartNumDefn = new ConstraintDefinition("segtemplateStartnumDefinition", segstartnumDesc,
+                                                                   iterEntity);
+
+            segmentTemplateStartNumDefn->setConstraintEnforcementForDefinition(
+                    conformance::exception::ConformanceEnforcementTypes::MAY);
+            segmentTemplateStartNumDefn->setConstraintOperatorForEntity(
+                    conformance::constraints::ConstraintOperator::PRESENT);
+            segmentTemplateStartNumDefn->setExpectedConstraintEntityVal(iterEntity, "true");
+
+        } else if (iterEntity.entityName().compare("timescale") == 0) {
+            const std::string segtimescaleDesc = "Segment timescale parameter MAY be PRESENT";
+            segmentTemplateTimescaleDefn = new ConstraintDefinition("segtimescaleDefinition", segtimescaleDesc,
+                                                                    iterEntity);
+
+            segmentTemplateTimescaleDefn->setConstraintEnforcementForDefinition(
+                    conformance::exception::ConformanceEnforcementTypes::MAY);
+            segmentTemplateTimescaleDefn->setConstraintOperatorForEntity(
+                    conformance::constraints::ConstraintOperator::PRESENT);
+            segmentTemplateTimescaleDefn->setExpectedConstraintEntityVal(iterEntity, "true");
+
+        } else if (iterEntity.entityName().compare("segduration") == 0) {
+            const std::string segdurationDesc = "SegmentTemplate@duration MUST be PRESENT";
+            segmentTemplateDurationDefn = new ConstraintDefinition("segdurationDefinition", segdurationDesc, iterEntity);
+
+            segmentTemplateDurationDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::MUST);
+            segmentTemplateDurationDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::PRESENT);
+            segmentTemplateDurationDefn->setExpectedConstraintEntityVal(iterEntity, "true");
+
+            const std::string segtimelineDesc = "SegmentTemplate@Timeline MUST be PRESENT";
+            segmentTemplateTimelineDefn = new ConstraintDefinition("segtimelineDefinition", segtimelineDesc, iterEntity);
+
+            segmentTemplateTimelineDefn->setConstraintEnforcementForDefinition(conformance::exception::ConformanceEnforcementTypes::MUST);
+            segmentTemplateTimelineDefn->setConstraintOperatorForEntity(conformance::constraints::ConstraintOperator::PRESENT);
+            segmentTemplateTimelineDefn->setExpectedConstraintEntityVal(iterEntity, "true");
+
+            // ACCOUNT FOR COMBINATORIAL OR of segmentTemplateDurationDefn and segmentTemplateTimelineDefn.
 
         } else if (iterEntity.entityName().compare("mimeType") == 0) {
             const std::string videoMimeType = "video/mp4";
