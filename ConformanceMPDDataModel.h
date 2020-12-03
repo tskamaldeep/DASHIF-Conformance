@@ -25,12 +25,12 @@ namespace conformance::parser {
     const std::list<const std::string> AAC_AUDIO_CODECS = {MPEG4_AAC_CODEC, MPEG4_HE_AAC_CODEC, MPEG4_HE_AAC_v2_CODEC};
 
     // H.264 codec attributes.
+    const std::string AVC_HIGH_LEVEL_40_1E_CODEC = "avc1.64001e";
     const std::string AVC_HIGH_LEVEL_40_28_CODEC = "avc1.640028";
     const std::string AVC_HIGH_LEVEL_40_30_CODEC = "avc1.640030";
     const std::string AVC_MAIN_LEVEL_1_CODEC = "avc1.42C01F";
     const std::string AVC_MAIN_LEVEL_2_CODEC = "avc1.4D401E";
     const std::string AVC_MAIN_LEVEL_3_CODEC = "avc1.4D401F";
-
     // HEVC codec attributes.
     const std::string HEVC_MAIN_3_1_LEVEL_CODEC_1 = "hev1.1.2.L93.B0";
     const std::string HEVC_MAIN_4_1_LEVEL_CODEC_1 = "hev1.1.2.L123.B0";
@@ -260,6 +260,8 @@ namespace conformance::parser {
     public:
         ConformanceMPDAdaptationSet(const std::string adID) : adID_(adID) {}
 
+        const std::string adID() { return adID_; }
+
         std::list<ConformanceMPDRepresentation> representations() { return representations_; }
 
         void setPARForAdaptationSet(const std::string adpar);
@@ -284,9 +286,21 @@ namespace conformance::parser {
 
     class ConformanceMPDPeriod {
     private:
-        std::size_t pid_;
+        std::string pid_;
         std::size_t pduration_;
-//        std::list<>
+        std::size_t numadaptationSets_;
+        std::list<ConformanceMPDAdaptationSet> *adaptationSets = {};
+
+    public:
+        ConformanceMPDPeriod(std::string pid, std::size_t pduration);
+        std::string pid() {return pid_; }
+        std::size_t pduration() {return pduration_; }
+        std::size_t numadaptationSets() {return numadaptationSets_; }
+
+        std::size_t numAdaptationSets() { return adaptationSets->size(); }
+        std::size_t addAdaptationSetToPeriod (ConformanceMPDAdaptationSet& aset);
+
+        ~ConformanceMPDPeriod() = default;
     };
 
     class ConformanceMPDDataModel {

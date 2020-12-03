@@ -20,14 +20,13 @@ ConformanceMPDSegmentTemplate::ConformanceMPDSegmentTemplate(std::size_t startnu
                                                              std::string mediaStr,
                                                              std::size_t timescale,
                                                              std::size_t pts,
-                                                             std::size_t duration):
+                                                             std::size_t duration) :
         startNum_(startnum), initializationStr_(initialization), mediastr_(mediaStr), timescale_(timescale), pts_(pts) {
 
     if (duration > 0) {
         segtimeslinesPresent_ = false;
         duration_ = std::move(duration);
-    }
-    else {
+    } else {
         segtimeslinesPresent_ = true;
         duration_ = -1;
     }
@@ -155,4 +154,24 @@ std::size_t ConformanceMPDAdaptationSet::addRepresentationToAdaptationSet(Confor
 
     // Return number of reps or the ID of the added rep.
     return numrepresentations_;
+}
+
+ConformanceMPDPeriod::ConformanceMPDPeriod(std::string pid, std::size_t pduration) : pid_(pid), pduration_(pduration) {
+    numadaptationSets_ = 0;
+}
+
+std::size_t ConformanceMPDPeriod::addAdaptationSetToPeriod(ConformanceMPDAdaptationSet &aset) {
+
+    std::list<ConformanceMPDAdaptationSet>::iterator aditer = std::list<ConformanceMPDAdaptationSet>::iterator ();
+    for (aditer=adaptationSets->begin(); aditer!= adaptationSets->end();aditer++) {
+        if (!aditer->adID().compare(aset.adID())) {
+            std::cerr << "Given adaptation set " << std::string(aset.adID()) << " already added to the period. "
+                      << pid_ << std::endl;
+            return numadaptationSets_;
+        }
+    }
+
+    numadaptationSets_ += 1;
+    adaptationSets->push_back(aset);
+    return numadaptationSets_;
 }
