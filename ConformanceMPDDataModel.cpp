@@ -156,7 +156,16 @@ std::size_t ConformanceMPDAdaptationSet::addRepresentationToAdaptationSet(Confor
     return numrepresentations_;
 }
 
-ConformanceMPDPeriod::ConformanceMPDPeriod(std::string pid, std::size_t pduration) : pid_(pid), pduration_(pduration) {
+ConformanceMPDPeriod::ConformanceMPDPeriod(std::string pid, std::size_t pduration, std::size_t pdstart) : pid_(pid), pduration_(pduration) {
+    if (pdstart > 0) {
+        starttagpresent = true;
+        pdstart_ = std::move(pdstart);
+    }
+    else {
+        starttagpresent = false;
+        pdstart = -1;
+    }
+
     numadaptationSets_ = 0;
 }
 

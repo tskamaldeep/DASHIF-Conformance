@@ -288,11 +288,13 @@ namespace conformance::parser {
     private:
         std::string pid_;
         std::size_t pduration_;
+        std::size_t pdstart_ = -1;
+        bool starttagpresent = false;
         std::size_t numadaptationSets_;
         std::list<ConformanceMPDAdaptationSet> adaptationSets = {};
 
     public:
-        ConformanceMPDPeriod(std::string pid, std::size_t pduration);
+        ConformanceMPDPeriod(std::string pid, std::size_t pduration, std::size_t pdstart=-1);
         std::string pid() {return pid_; }
         std::size_t pduration() {return pduration_; }
         std::size_t numadaptationSets() {return numadaptationSets_; }
