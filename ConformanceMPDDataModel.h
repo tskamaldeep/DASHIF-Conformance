@@ -289,7 +289,7 @@ namespace conformance::parser {
         std::string pid_;
         std::size_t pduration_;
         std::size_t numadaptationSets_;
-        std::list<ConformanceMPDAdaptationSet> *adaptationSets = {};
+        std::list<ConformanceMPDAdaptationSet> adaptationSets = {};
 
     public:
         ConformanceMPDPeriod(std::string pid, std::size_t pduration);
@@ -297,7 +297,7 @@ namespace conformance::parser {
         std::size_t pduration() {return pduration_; }
         std::size_t numadaptationSets() {return numadaptationSets_; }
 
-        std::size_t numAdaptationSets() { return adaptationSets->size(); }
+        std::size_t numAdaptationSets() { return adaptationSets.size(); }
         std::size_t addAdaptationSetToPeriod (ConformanceMPDAdaptationSet& aset);
 
         ~ConformanceMPDPeriod() = default;
@@ -309,21 +309,22 @@ namespace conformance::parser {
         float minbuffertime_;
         const std::string mpdtype_;
         float mpdduration_;
-        std::size_t numperiods_;
+        std::size_t numperiods_ = 0;
         bool ismultipleperiods_ = false;
         std::list<const std::string> *mpdprofiles_;
-
-//        bool createPeriodObjectFromMPD(const std::size_t pid, )
-
-        bool createAdaptationSetFromMPD(AdaptationSets adaptationType, bool segAlignment = true);
-
-        void addAttributeToAdaptationSet(const std::string attrkey, std::size_t attrval);
+        std::list<ConformanceMPDPeriod> mpdPeriods = {};
 
     public:
+        ConformanceMPDDataModel() {}
+
         bool isMultiplePeriods() { return numperiods_ > 1; }
+        void addMPDProfile(const std::string profilestr) { mpdprofiles_->push_back(profilestr); }
+
+        std::size_t addPeriodTagToMPD(ConformanceMPDPeriod& pd);
 
         std::size_t numPeriods() { return numperiods_; }
 
+        ~ConformanceMPDDataModel() = default;
     };
 
 }

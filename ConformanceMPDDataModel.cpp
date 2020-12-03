@@ -163,7 +163,7 @@ ConformanceMPDPeriod::ConformanceMPDPeriod(std::string pid, std::size_t pduratio
 std::size_t ConformanceMPDPeriod::addAdaptationSetToPeriod(ConformanceMPDAdaptationSet &aset) {
 
     std::list<ConformanceMPDAdaptationSet>::iterator aditer = std::list<ConformanceMPDAdaptationSet>::iterator ();
-    for (aditer=adaptationSets->begin(); aditer!= adaptationSets->end();aditer++) {
+    for (aditer=adaptationSets.begin(); aditer!= adaptationSets.end();aditer++) {
         if (!aditer->adID().compare(aset.adID())) {
             std::cerr << "Given adaptation set " << std::string(aset.adID()) << " already added to the period. "
                       << pid_ << std::endl;
@@ -172,6 +172,22 @@ std::size_t ConformanceMPDPeriod::addAdaptationSetToPeriod(ConformanceMPDAdaptat
     }
 
     numadaptationSets_ += 1;
-    adaptationSets->push_back(aset);
+    adaptationSets.push_back(aset);
     return numadaptationSets_;
+}
+
+std::size_t ConformanceMPDDataModel::addPeriodTagToMPD(ConformanceMPDPeriod &pd) {
+
+    std::list<ConformanceMPDPeriod>::iterator periter = std::list<ConformanceMPDPeriod>::iterator ();
+    for (periter=mpdPeriods.begin(); periter!= mpdPeriods.end();periter++) {
+        if (!periter->pid().compare(pd.pid())) {
+            std::cerr << "Given period " << std::string(pd.pid()) << " already added to the model. " << std::endl;
+            return numperiods_;
+        }
+    }
+
+    numperiods_ += 1;
+    mpdPeriods.push_back(pd);
+    return numperiods_;
+
 }
