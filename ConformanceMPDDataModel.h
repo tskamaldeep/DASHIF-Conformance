@@ -22,7 +22,7 @@ namespace conformance::parser {
     const std::string MPEG4_HE_AAC_CODEC = "mp4a.40.5";
     const std::string MPEG4_HE_AAC_v2_CODEC = "mp4a.40.29";
     // List of allowed audio codec settings.
-    const std::list<const std::string> AAC_AUDIO_CODECS = { MPEG4_AAC_CODEC, MPEG4_HE_AAC_CODEC, MPEG4_HE_AAC_v2_CODEC };
+    const std::list<const std::string> AAC_AUDIO_CODECS = {MPEG4_AAC_CODEC, MPEG4_HE_AAC_CODEC, MPEG4_HE_AAC_v2_CODEC};
 
     // H.264 codec attributes.
     const std::string AVC_HIGH_LEVEL_40_28_CODEC = "avc1.640028";
@@ -75,19 +75,50 @@ namespace conformance::parser {
         CONTENT_TYPE_TEXT
     };
 
+    typedef struct S {
+        std::size_t d;
+        std::size_t r;
+    } S;
+
+    class ConformanceMPDSegmentTimeline {
+    private:
+        S s_;
+
+    public:
+        ConformanceMPDSegmentTimeline(std::size_t d, std::size_t r) {
+            s_.d = std::move(d);
+            s_.r = std::move(r);
+        }
+
+        std::size_t segdur () { return s_.d; }
+        std::size_t segr() {return s_.r; }
+
+        void assignS(S s) { s_ = std::move(s); }
+
+        ~ConformanceMPDSegmentTimeline() = default;
+    };
+
     class ConformanceMPDSegmentTemplate {
     private:
         std::size_t timescale_;
         std::size_t pts_;
-        std::size_t duration_;
+        std::size_t duration_ = -1;
         std::string mediastr_;
         std::string initializationStr_;
         std::size_t startNum_;
 
+        std::list<ConformanceMPDSegmentTimeline> segTimelines_ = {};
+        bool segtimeslinesPresent_ = true;
+
     public:
         ConformanceMPDSegmentTemplate(std::size_t startnum, std::string initialization,
-                                      std::size_t dur, std::string mediaStr, std::size_t timescale,
-                                      std::size_t pts);
+                                      std::string mediaStr, std::size_t timescale,
+                                      std::size_t pts, std::size_t duration=-1);
+
+        bool segTimelinesPresent() { return segtimeslinesPresent_; }
+        std::size_t duration () { return duration_; }
+
+        std::size_t addSegmentTimeline(std::size_t dur, std::size_t r);
 
         ~ConformanceMPDSegmentTemplate() = default;
 
@@ -112,9 +143,9 @@ namespace conformance::parser {
     public:
         ConformanceMPDRepresentation(const std::string repid) : repid_(repid) {}
 
-        const std::string repID() {return repid_; }
+        const std::string repID() { return repid_; }
 
-        std::list<ConformanceMPDSegmentTemplate> segmentTemplates () {return segmentTemplates_; }
+        std::list<ConformanceMPDSegmentTemplate> segmentTemplates() { return segmentTemplates_; }
 
         void setMimeTypeForRepresentation(std::string mimetype) {
             if (mimetype != VIDEO_MIME_TYPE && mimetype != AUDIO_MIME_TYPE && mimetype != TEXT_MIME_TYPE) {
@@ -128,7 +159,7 @@ namespace conformance::parser {
 
         void setCodecsForRepresentation(std::string codecs) {
             if (std::find(AAC_AUDIO_CODECS.begin(), AAC_AUDIO_CODECS.end(), codecs) == AAC_AUDIO_CODECS.end() &&
-                    std::find(MP4_VIDEO_CODECS.begin(), MP4_VIDEO_CODECS.end(), codecs) == MP4_VIDEO_CODECS.end()) {
+                std::find(MP4_VIDEO_CODECS.begin(), MP4_VIDEO_CODECS.end(), codecs) == MP4_VIDEO_CODECS.end()) {
                 std::cerr << "Invalid codec parameters provided with representation ID: " << repid_ << std::endl;
                 std::cerr << "codec param setting failed." << std::endl;
                 return;
@@ -159,7 +190,8 @@ namespace conformance::parser {
 
         void setAudioSampleRateForRepresentation(std::size_t asrate) {
             if (std::find(AUDIO_SAMPLE_RATES.begin(), AUDIO_SAMPLE_RATES.end(), asrate) == AUDIO_SAMPLE_RATES.end()) {
-                std::cerr << "Invalid representation audio sample rate provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Invalid representation audio sample rate provided with representation ID: " << repid_
+                          << std::endl;
                 std::cerr << "Representation audio sample rate failed." << std::endl;
                 return;
             }
@@ -169,7 +201,8 @@ namespace conformance::parser {
 
         void setVideoFrameRateForRepresentation(float repframerate) {
             if (repframerate < 0 || repframerate > MAX_FRAME_RATE) {
-                std::cerr << "Invalid representation video frame rate provided with representation ID: " << repid_ << std::endl;
+                std::cerr << "Invalid representation video frame rate provided with representation ID: " << repid_
+                          << std::endl;
                 std::cerr << "Representation video frame rate failed." << std::endl;
                 return;
             }
@@ -226,14 +259,20 @@ namespace conformance::parser {
 
     public:
         ConformanceMPDAdaptationSet(const std::string adID) : adID_(adID) {}
-        std::list<ConformanceMPDRepresentation> representations () {return representations_; }
+
+        std::list<ConformanceMPDRepresentation> representations() { return representations_; }
 
         void setPARForAdaptationSet(const std::string adpar);
+
         void setContentTypeForAdaptationSet(std::size_t ctype);
+
         void setBitstreamSwitchingForAdaptationSet(bool bsswitching);
-        void setWidthForAdaptationSet(std::size_t widthval, bool max=false, bool min=false);
-        void setHeightForAdaptationSet(std::size_t heightval, bool max=false, bool min=false);
-        void setFrameRateForAdaptationSet(std::size_t frate, bool max=false);
+
+        void setWidthForAdaptationSet(std::size_t widthval, bool max = false, bool min = false);
+
+        void setHeightForAdaptationSet(std::size_t heightval, bool max = false, bool min = false);
+
+        void setFrameRateForAdaptationSet(std::size_t frate, bool max = false);
 
         std::size_t addRepresentationToAdaptationSet(ConformanceMPDRepresentation &rep);
 

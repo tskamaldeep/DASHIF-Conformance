@@ -6,13 +6,31 @@
 
 using namespace conformance::parser;
 
-ConformanceMPDSegmentTemplate::ConformanceMPDSegmentTemplate(std::size_t startnum, std::string initialization,
-                                                             std::size_t dur, std::string mediaStr,
-                                                             std::size_t timescale,
-                                                             std::size_t pts) :
-        startNum_(startnum), initializationStr_(initialization),
-        duration_(dur), mediastr_(mediaStr), timescale_(timescale), pts_(pts) {
+std::size_t ConformanceMPDSegmentTemplate::addSegmentTimeline(std::size_t dur, std::size_t r) {
+    ConformanceMPDSegmentTimeline *stimeline = new ConformanceMPDSegmentTimeline(dur, r);
+    // Announce presence of the segment timeline.
+    segtimeslinesPresent_ = true;
+    duration_ = -1;
 
+    segTimelines_.push_back(*stimeline);
+    return segTimelines_.size();
+}
+
+ConformanceMPDSegmentTemplate::ConformanceMPDSegmentTemplate(std::size_t startnum, std::string initialization,
+                                                             std::string mediaStr,
+                                                             std::size_t timescale,
+                                                             std::size_t pts,
+                                                             std::size_t duration):
+        startNum_(startnum), initializationStr_(initialization), mediastr_(mediaStr), timescale_(timescale), pts_(pts) {
+
+    if (duration > 0) {
+        segtimeslinesPresent_ = false;
+        duration_ = std::move(duration);
+    }
+    else {
+        segtimeslinesPresent_ = true;
+        duration_ = -1;
+    }
     // Check the extension of mediastr and initialization of the segment template.
     // Supported extensions table available for the version in force?
 
