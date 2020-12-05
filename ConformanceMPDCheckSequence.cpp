@@ -118,6 +118,12 @@ bool ConformanceMPDCheckSequence::drmPresenceCheck() {
     return true;
 }
 
+bool ConformanceMPDCheckSequence::secureStreamCheck() {
+    // Encryption/key/any other non-DRM form it appears.
+    // Re-visit the need for this method.
+    return true;
+}
+
 bool ConformanceMPDCheckSequence::keyServerAvailabilityCheck() {
     // Is there a secure server defined for key fetch?
     // Presence of key server and downloadable property of the key.

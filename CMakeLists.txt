@@ -16,5 +16,4 @@ add_library(DASHIF_Conformance STATIC library.cpp library.h ConformanceException
 
 # Add the include directory locations
 target_include_directories(DASHIF_Conformance PUBLIC /usr/local/Cellar/libxml++3/3.2.2/include/libxml++-3.0 /usr/local/Cellar/libxml++3/3.2.2/lib/libxml++-3.0/include)
-
 target_include_directories(DASHIF_Conformance PUBLIC /usr/local/Cellar/glibmm/2.64.4/include/glibmm-2.4 /usr/local/Cellar/glibmm/2.64.4/lib/glibmm-2.4/include /usr/local/Cellar/glib/2.66.2_1/include /usr/local/Cellar/glib/2.66.2_1/include/glib-2.0 /usr/local/Cellar/glib/2.66.2_1/lib/glib-2.0/include)

@@ -309,7 +309,7 @@ namespace conformance::parser {
     private:
         const std::string xmlns_;
         float minbuffertime_;
-        const std::string mpdtype_;
+        std::string mpdtype_;
         float mpdduration_;
         std::size_t numperiods_ = 0;
         bool ismultipleperiods_ = false;
@@ -325,6 +325,12 @@ namespace conformance::parser {
         std::size_t addPeriodTagToMPD(ConformanceMPDPeriod& pd);
 
         std::size_t numPeriods() { return numperiods_; }
+
+        // Attributes of root MPD tree.
+        // Private or public? Shift accordingly.
+        void MPDType (std::string mpdtype) {mpdtype_ = std::move(mpdtype); }
+        void MPDDuration (float mpddur) {mpdduration_ = std::move(mpddur); }
+        void MPDMinBufferTime (float mpdmbt) { minbuffertime_= std::move(mpdmbt); }
 
         ~ConformanceMPDDataModel() = default;
     };
