@@ -145,8 +145,6 @@ namespace conformance::download {
         CHECKFUNCTIONSMAP *checkFunctions_ = new std::map<std::int16_t, std::function<bool()>>();
 
     public:
-        ConformanceMPDCheckSequence() {};
-
         ConformanceMPDCheckSequence(const std::string mpdurl);
 
         const std::string MPDURL() { return mpdurl_; }

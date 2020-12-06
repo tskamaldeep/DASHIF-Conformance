@@ -262,9 +262,9 @@ void ConformanceMPDCheckSequence::CheckCallback(std::string funcstr, std::int16_
     }
 }
 
-ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(
-        const std::string mpdurl) : mpdurl_(mpdurl) {
+ConformanceMPDCheckSequence::ConformanceMPDCheckSequence(const std::string mpdurl) {
 
+    mpdurl_ = std::move(mpdurl);
     // Find the schema type:
     std::string murl = this->MPDURL();
 
