@@ -31,28 +31,25 @@ namespace conformance::parser {
 
         xmlpp::DomParser *DOMParser() { return parser_; }
 
-        const Glib::ustring xmlData() { return xmldata_; }
-
         void validateDocument(bool validate) {
             validate_document_ = validate;
             parser_->set_validate(validate);
         }
-
-        bool validateDocument() { return validate_document_; }
 
         void parserThrowMessages(bool throwmsg) {
             throw_messages_ = throwmsg;
             parser_->set_throw_messages(throwmsg);
         }
 
-        bool parserThrowMessages() { return throw_messages_; }
-
         void parserWithDefaultAttributes(bool haveAttrs) {
             have_default_attrs_ = haveAttrs;
             parser_->set_include_default_attributes(haveAttrs);
         }
 
+        const Glib::ustring xmlData() { return xmldata_; }
         bool parserWithDefaultAttributes() { return have_default_attrs_; }
+        bool parserThrowMessages() { return throw_messages_; }
+        bool validateDocument() { return validate_document_; }
 
         bool parseXML();
 
