@@ -325,6 +325,8 @@ namespace conformance::parser {
         std::size_t addPeriodTagToMPD(ConformanceMPDPeriod& pd);
 
         std::size_t numPeriods() { return numperiods_; }
+        float minBufferTime () {return minbuffertime_; }
+        std::string MPDType() {return mpdtype_; }
 
         // Attributes of root MPD tree.
         // Private or public? Shift accordingly.
