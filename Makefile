@@ -130,6 +130,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named library
+
+# Build rule for target.
+library: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 library
+.PHONY : library
+
+# fast build rule for target.
+library/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/library.dir/build.make CMakeFiles/library.dir/build
+.PHONY : library/fast
+
+#=============================================================================
 # Target rules for targets named DASHIF_Conformance
 
 # Build rule for target.
@@ -337,6 +350,7 @@ library.o: library.cpp.o
 
 # target to build an object file
 library.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/library.dir/build.make CMakeFiles/library.dir/library.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/library.cpp.o
 .PHONY : library.cpp.o
 
@@ -346,6 +360,7 @@ library.i: library.cpp.i
 
 # target to preprocess a source file
 library.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/library.dir/build.make CMakeFiles/library.dir/library.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/library.cpp.i
 .PHONY : library.cpp.i
 
@@ -355,6 +370,7 @@ library.s: library.cpp.s
 
 # target to generate assembly for a file
 library.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/library.dir/build.make CMakeFiles/library.dir/library.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DASHIF_Conformance.dir/build.make CMakeFiles/DASHIF_Conformance.dir/library.cpp.s
 .PHONY : library.cpp.s
 
@@ -367,6 +383,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... DASHIF_Conformance"
+	@echo "... library"
 	@echo "... ConformanceConstraints.o"
 	@echo "... ConformanceConstraints.i"
 	@echo "... ConformanceConstraints.s"

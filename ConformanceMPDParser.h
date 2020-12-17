@@ -21,12 +21,12 @@ namespace conformance::parser {
         bool have_default_attrs_ = true;
         // What is the purpose of substituting entities in the XML DOM tree?
 
-        const Glib::ustring &xmldata_;
+        const std::string &xmldata_;
 
     public:
-        ConformanceMPDParser(const Glib::ustring &xmlData) : xmldata_(xmlData) {};
+        ConformanceMPDParser(const std::string &xmlData) : xmldata_(xmlData) {};
 
-        ConformanceMPDParser(const Glib::ustring &xmlData, bool validate, bool throwmsg, bool haveattrs) : xmldata_(xmlData),
+        ConformanceMPDParser(const std::string &xmlData, bool validate, bool throwmsg, bool haveattrs) : xmldata_(xmlData),
         validate_document_(validate), throw_messages_(throwmsg), have_default_attrs_(haveattrs) {}
 
         xmlpp::DomParser *DOMParser() { return parser_; }
@@ -46,7 +46,7 @@ namespace conformance::parser {
             parser_->set_include_default_attributes(haveAttrs);
         }
 
-        const Glib::ustring xmlData() { return xmldata_; }
+        const std::string xmlData() { return xmldata_; }
         bool parserWithDefaultAttributes() { return have_default_attrs_; }
         bool parserThrowMessages() { return throw_messages_; }
         bool validateDocument() { return validate_document_; }
@@ -55,9 +55,7 @@ namespace conformance::parser {
 
         ~ConformanceMPDParser() = default;
 //
-//
     };
-//
 }
 
 #endif //DASHIF_CONFORMANCE_CONFORMANCEMPDPARSER_H
