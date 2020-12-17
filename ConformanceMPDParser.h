@@ -52,9 +52,8 @@ namespace conformance::parser {
         bool validateDocument() { return validate_document_; }
 
         bool parseXML();
-
         ~ConformanceMPDParser() = default;
-//
+
     };
 }
 

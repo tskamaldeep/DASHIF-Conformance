@@ -16,7 +16,6 @@ int main(int argc, char **argv) {
 //    std::cout << mpdcs->currentSystemTime().time_since_epoch().count() << std::endl;
 
     ConformanceMPDDataModel *dm = new ConformanceMPDDataModel();
-    std::cout << dm->isMultiplePeriods() << " " << dm->numPeriods()<< std::endl;
 
     const std::string fpath = "samples/MultiResMPEG2.mpd";
     std::ifstream xmlMPD(fpath, std::ios::binary);
@@ -38,7 +37,10 @@ int main(int argc, char **argv) {
 
         // Try to instantiate an XML parser.
         // xmlparser should now initialize the entire MPD string.
-        ConformanceMPDParser *xmlparser = new ConformanceMPDParser(xmldata);
+        ConformanceMPDParser *xmlparser = new ConformanceMPDParser(xmldata, true, false, true);
+        cout << xmlparser->xmlData() << endl;
+
+        //bool parseresult = xmlparser->parseXML();
 
     }
 
