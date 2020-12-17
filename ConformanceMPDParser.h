@@ -46,12 +46,13 @@ namespace conformance::parser {
             parser_->set_include_default_attributes(haveAttrs);
         }
 
+        void parseXMLContents();
+
         const std::string xmlData() { return xmldata_; }
         bool parserWithDefaultAttributes() { return have_default_attrs_; }
         bool parserThrowMessages() { return throw_messages_; }
         bool validateDocument() { return validate_document_; }
 
-        bool parseXML();
         ~ConformanceMPDParser() = default;
 
     };

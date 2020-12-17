@@ -8,7 +8,7 @@
 using namespace conformance::parser;
 using namespace conformance::exception;
 
-bool ConformanceMPDParser::parseXML() {
+void ConformanceMPDParser::parseXMLContents() {
     bool result = false;
 
     if (xmldata_.size() <= 0) {
@@ -26,10 +26,11 @@ bool ConformanceMPDParser::parseXML() {
             // The serialized details object would be better.
             throw (mediaExc);
         }
-        return result;
+//        return result;
     }
 
     // Start the parseXML routine.
+    parser_->parse_memory(xmldata_);
     xmlpp::Document *doc = parser_->get_document();
     xmlpp::Element *enode = doc->get_root_node();
 
@@ -42,6 +43,6 @@ bool ConformanceMPDParser::parseXML() {
         // Use the system file or a tmp location on disk?
     }
 
-    result = true;
-    return result;
+//    result = true;
+//    return result;
 }
