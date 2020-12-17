@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
         ConformanceMPDParser *xmlparser = new ConformanceMPDParser(xmldata, true, false, true);
         cout << xmlparser->xmlData() << endl;
 
-        //bool parseresult = xmlparser->parseXML();
+        // xmlparser->parseXMLContents();
 
     }
 
