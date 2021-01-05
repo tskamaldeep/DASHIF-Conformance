@@ -30,8 +30,8 @@ void ConformanceMPDParser::parseXMLContents() {
     }
 
     // Start the parseXML routine.
-    dparser.parse_memory(xmldata_);
-    xmlpp::Document *doc = dparser.get_document();
+    dparser_->parse_memory(xmldata_);
+    xmlpp::Document *doc = dparser_->get_document();
     xmlpp::Element *enode = doc->get_root_node();
 
     xmlpp::Element::NodeList nlist = enode->get_children();

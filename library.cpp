@@ -8,6 +8,7 @@
 
 using namespace conformance::download;
 using namespace conformance::parser;
+using namespace xmlpp;
 
 int main(int argc, char **argv) {
     const std::string mpdurl = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
@@ -34,12 +35,12 @@ int main(int argc, char **argv) {
         xmldata = new char [filelen];
 
         xmlMPD.read(reinterpret_cast<char *>(xmldata), filelen);
-        cout << xmldata << endl;
 
         // Try to instantiate an XML parser.
         // xmlparser should now initialize the entire MPD string.
-        // ConformanceMPDParser *xmlparser = new ConformanceMPDParser(xmldata, true, false, true);
-       //  cout << xmlparser->xmlData() << endl;
+        const std::string &newxmlattr = std::string(xmldata);
+        ConformanceMPDParser *xmlparser = new ConformanceMPDParser(newxmlattr);
+         cout << xmlparser->xmlData() << endl;
 
         // xmlparser->parseXMLContents();
 
