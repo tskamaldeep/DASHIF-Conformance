@@ -34,11 +34,12 @@ int main(int argc, char **argv) {
         xmldata = new char [filelen];
 
         xmlMPD.read(reinterpret_cast<char *>(xmldata), filelen);
+        cout << xmldata << endl;
 
         // Try to instantiate an XML parser.
         // xmlparser should now initialize the entire MPD string.
-        ConformanceMPDParser *xmlparser = new ConformanceMPDParser(xmldata, true, false, true);
-        cout << xmlparser->xmlData() << endl;
+        // ConformanceMPDParser *xmlparser = new ConformanceMPDParser(xmldata, true, false, true);
+       //  cout << xmlparser->xmlData() << endl;
 
         // xmlparser->parseXMLContents();
 
